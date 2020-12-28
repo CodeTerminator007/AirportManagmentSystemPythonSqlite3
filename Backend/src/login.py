@@ -3,7 +3,7 @@ from database import Datbase
 from Custom_authentication import Authentication
 root=Tk()
 root.title("Login System")
-root.geometry("800x600+100+50")
+root.geometry("800x600+400+70")
 root.bg="Black"
 root.resizable(False, False)
 

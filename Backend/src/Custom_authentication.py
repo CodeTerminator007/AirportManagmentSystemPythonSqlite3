@@ -10,12 +10,12 @@ class Authentication(Datbase):
             if password:
                 obj = Datbase() #creating the object of DATABASSE CLASS
                 values = obj.Show_data() #calling ShowFunction FROM DATABASECLASS
-                print(values)
                 for value in values:
                     usern = value[3]
                     passw = value[5]
                     if usern == username and passw == password:
                         print("Logged in")
+                        print(value)
                         break
                     else:
                         print("Wrong Username or Password")                  

@@ -207,7 +207,7 @@ class Datbase:
         conn.close()         
 
 obj = Datbase()
-obj.Create_database()
+# obj.Create_database()
 # obj.create_users_table()
 # obj.create_flights_table() 
 # obj.create_passengers_table()
