@@ -15,7 +15,7 @@ class Datbase:
         currsor.execute("""CREATE TABLE users(
             userid INTEGER PRIMARY KEY AUTOINCREMENT,            
             first_name text NOT NULL,
-            last_name text NOT NULL,
+            last_name text NOT NULL,            
             username text NOT NULL UNIQUE, 
             email text NOT NULL UNIQUE,
             password text NOT NULL,
@@ -31,7 +31,7 @@ class Datbase:
         currsor.execute("""CREATE TABLE flights(
             flightid INTEGER PRIMARY KEY ,
             airline_name text NOT NULL,
-            flight_number text NOT NULL,
+            flight_number text NOT NULL UNIQUE,
             no_of_seats int NOT NULL,
             no_of_seats_avaliable int,
             source text NOT NULL,                        
@@ -52,7 +52,7 @@ class Datbase:
             first_name text NOT NULL,
             last_name text NOT NULL,
             email text ,
-            cnic int,
+            cnic int UNIQUE,
             date_of_birth timestamp NOT NULL,                        
             nationality text NOT NULL,
             gender text NOT NULL ,
@@ -66,7 +66,7 @@ class Datbase:
         conn.commit()
         conn.close()
 
-    def Insert_data_passengers(self,first_name,last_name,email,cnic,date_of_birth,nationality,gender,flight_number,flightid,created):
+    def Insert_data_passengers(self,first_name,last_name,email,cnic,date_of_birth,nationality,gender,flight_number,created,flightid):
 
         try:
             conn = sqlite3.connect('database.db')
@@ -83,7 +83,7 @@ class Datbase:
                             'gender',
                             'flight_number',
                             'created',
-                            'flightid'
+                            'flightid'                            
                             
                             ) 
                             VALUES ( ?,?,?,?,?,?,?,?,?,?);"""
@@ -189,7 +189,7 @@ class Datbase:
                 conn.close()
                 #closing the connection to database              
 
-    def Show_data(self):
+    def Show_all_users_data(self):
         conn = sqlite3.connect('database.db')
         currsor = conn.cursor()
         currsor.execute("SELECT * FROM users")
@@ -198,24 +198,71 @@ class Datbase:
         conn.close()
         return datas                 
 
-    def Delete_data(self):
+    def show_specif_user_data(self,pk):
         conn = sqlite3.connect('database.db')
         currsor = conn.cursor()
-        query = """ DELETE FROM users WHERE userid = 1""" 
-        currsor.execute(query)
+        currsor.execute("SELECT * FROM users WHERE userid = ? ",[pk])
+        datas = currsor.fetchall()
         conn.commit()
-        conn.close()         
+        conn.close()
+        return datas
+    def Show_all_flights_data(self):
+        conn = sqlite3.connect('database.db')
+        currsor = conn.cursor()
+        currsor.execute("SELECT * FROM flights")
+        datas = currsor.fetchall()
+        conn.commit()
+        conn.close()
+        return datas                 
+             
+    def show_specif_flight_data(self,destination):
+        conn = sqlite3.connect('database.db')
+        currsor = conn.cursor()
+        currsor.execute("SELECT * FROM flights WHERE destination = ?",[destination])
+        datas = currsor.fetchall()
+        conn.commit()
+        conn.close()
+        return datas
+    def show_specif_flight_data_with_pk(self,pk):
+        conn = sqlite3.connect('database.db')
+        currsor = conn.cursor()
+        currsor.execute("SELECT * FROM flights WHERE flightid = ?",[pk])
+        datas = currsor.fetchall()
+        conn.commit()
+        conn.close()
+        return datas                   
+    def Show_all_passangers_data(self):
+        conn = sqlite3.connect('database.db')
+        currsor = conn.cursor()
+        currsor.execute("SELECT * FROM passengers")
+        datas = currsor.fetchall()
+        conn.commit()
+        conn.close()
+        return datas                 
+             
+    def show_specif_passanger_data(self,pk):
+        conn = sqlite3.connect('database.db')
+        currsor = conn.cursor()
+        currsor.execute("SELECT * FROM passengers WHERE passengerid = ?" ,[pk])
+        datas = currsor.fetchall()
+        conn.commit()
+        conn.close()
+        return datas                                
 
 obj = Datbase()
 # obj.Create_database()
 # obj.create_users_table()
 # obj.create_flights_table() 
 # obj.create_passengers_table()
-# obj.Insert_data_flights("PIA","N1233",155,134,"Lahore","London",datetime.datetime(2020,2,22,1,15,00),datetime.datetime(2020,2,22,12,00,00),datetime.datetime.now())
-# obj.Insert_data_users("Hussnain",'Ahmad','admin2',"aliahmad522@gmail.com","admin",datetime.datetime.now())
-# obj.Insert_data_passengers("Husnain","Ahmad","aliahmad512@gmail.com",12456786,datetime.datetime(1997,2,12),"Pakistani","Male","nh122",datetime.datetime.now(),'2')
+# obj.Insert_data_flights("AmericanAirLine","GH1S",155,134,"Lahore","London",datetime.datetime(2020,2,22,1,15,00),datetime.datetime(2020,2,22,12,00,00),datetime.datetime.now())
+# obj.Insert_data_users("Hussnain",'Ahmad','admin',"aliahmad522@gmail.com","admin",datetime.datetime.now())
+# obj.Insert_data_passengers("Ali","Ahmad","Hussnainahmad@gmail.com",555256324,datetime.datetime(1997,2,12),"Pakistani","Male","B1AA",datetime.datetime.now(),'2')
 # obj.Delete_data()
 # obj.Show_data()
+# obj.show_specif_user_data(2)
+# print(obj.Show_all_passangers_data())
+# print(obj.Show_all_flights_data())
+
     
 
 
