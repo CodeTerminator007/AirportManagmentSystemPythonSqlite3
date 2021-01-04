@@ -14,7 +14,8 @@ class Buy_Tickets:
         root=Tk()
         root.title("Passenger Information")
         root.geometry("1199x600+100+50")        
-
+        def close():
+            root.destroy()
         #BuyTicket Information
         Buy_ticket_frame=Frame(root,bg="white")
         Buy_ticket_frame.place(relx=0.5,rely=0.5, anchor = CENTER ,height=650,width=800)
@@ -103,9 +104,9 @@ class Buy_Tickets:
         drop_down_flights=OptionMenu(Buy_ticket_frame, clicked2, "default")        
         drop_down_flights.place(x=90,y=490,width=250,height=30)
 
-        def send_mail(address):            
-            EMAIL_ADDRESS = ''
-            EMAIL_PASSWORD = ''
+        def send_mail(address,first_name,last_name,flight_name,flight_num , flight_time ):            
+            EMAIL_ADDRESS = 'Husnainahmadgame@gmail.com'
+            EMAIL_PASSWORD = 'Anmolschool1'
 
             with smtplib.SMTP('smtp.gmail.com',587 ) as smtp:
                 smtp.ehlo()
@@ -115,7 +116,7 @@ class Buy_Tickets:
                 smtp.login(EMAIL_ADDRESS , EMAIL_PASSWORD)
 
                 subject = 'Airport Ticket'
-                body = 'Hi This The Ticket has been confirmed by'
+                body = f'Hi {first_name} {last_name } This The Ticket has been confirmed and the Plane {flight_name} {flight_num} Will leave on {flight_time} Thanks for chosing us \n Regards Hussnain Ahmad '
 
                 msg = f"Subject:{subject}\n\n {body}"
                 smtp.sendmail(EMAIL_ADDRESS,address , msg)
@@ -131,14 +132,25 @@ class Buy_Tickets:
             flight = clicked2.get()
             flightid = int(flight[0])
             real_flight = obj.show_specif_flight_data_with_pk(flightid)
+            flight_name = ""
+            flight_number = ""
             for s in real_flight:
-                flight_number = s[2]                
+                flight_number = s[2]
+                flight_name = s[1]
+                flight_time = s[7]  
+                aval_seats = s[4]              
             created = datetime.datetime.now()
             # print(flight_number)
-            obj.Insert_data_passengers(first_name,last_name,email,cnic,date_of_birth,nationality,gender,flight_number,created,flightid)
-            send_mail(email)
-            val = obj.Show_all_passangers_data()
-
+            if aval_seats >= 1 :
+                obj.Insert_data_passengers(first_name,last_name,email,cnic,date_of_birth,nationality,gender,flight_number,created,flightid)
+                obj.update_flight_avaliable_seats(flightid,aval_seats)
+                send_mail(email,first_name,last_name,flight_name,flight_number,flight_time)
+                val = obj.Show_all_passangers_data()
+                print(val)
+                val2 = obj.Show_all_flights_data()
+                print (val2)
+                close()                
+                
         submit_btn=Button(Buy_ticket_frame,text="Submit", command=confirm_ticket, bg="white",fg="black",font=("times new roman",15))
         submit_btn.place(x=90,y=540,width=180,height=40)
         root.mainloop()

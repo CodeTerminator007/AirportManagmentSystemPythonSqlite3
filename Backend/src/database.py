@@ -213,7 +213,16 @@ class Datbase:
         datas = currsor.fetchall()
         conn.commit()
         conn.close()
-        return datas                 
+        return datas  
+    def update_flight_avaliable_seats(self,pk,avl_seats):
+        conn = sqlite3.connect('database.db')
+        currsor = conn.cursor()
+        rem_seats = avl_seats - 1
+        currsor.execute("Update flights set no_of_seats_avaliable = ? Where flightid = ?",[rem_seats,pk])
+        datas = currsor.fetchall()
+        conn.commit()
+        conn.close()
+        return datas                        
              
     def show_specif_flight_data(self,destination):
         conn = sqlite3.connect('database.db')
@@ -261,8 +270,8 @@ obj = Datbase()
 # obj.Show_data()
 # obj.show_specif_user_data(2)
 # print(obj.Show_all_passangers_data())
+# obj.update_flight_avaliable_seats(1,134)
 # print(obj.Show_all_flights_data())
-
     
 
 
