@@ -51,7 +51,7 @@ class Datbase:
             passengerid INTEGER PRIMARY KEY ,
             first_name text NOT NULL,
             last_name text NOT NULL,
-            email text ,
+            email text NOT NULL,
             cnic int UNIQUE,
             date_of_birth timestamp NOT NULL,                        
             nationality text NOT NULL,
@@ -83,8 +83,7 @@ class Datbase:
                             'gender',
                             'flight_number',
                             'created',
-                            'flightid'                            
-                            
+                            'flightid'                                                        
                             ) 
                             VALUES ( ?,?,?,?,?,?,?,?,?,?);"""
 

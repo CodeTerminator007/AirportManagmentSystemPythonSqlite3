@@ -149,10 +149,6 @@ class Buy_Tickets:
                 obj.Insert_data_passengers(first_name,last_name,email,cnic,date_of_birth,nationality,gender,flight_number,created,flightid)
                 obj.update_flight_avaliable_seats(flightid,aval_seats)
                 send_mail(email,first_name,last_name,flight_name,flight_number,flight_time)
-                val = obj.Show_all_passangers_data()
-                print(val)
-                val2 = obj.Show_all_flights_data()
-                print (val2)
                 close()  
             else:
                 print("No seats Avaliable")              

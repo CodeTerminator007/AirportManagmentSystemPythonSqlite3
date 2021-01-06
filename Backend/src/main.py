@@ -1,11 +1,9 @@
 from tkinter import*
 from tkinter import ttk
-import smtplib
 import os
 from database import *
 from tkcalendar import  DateEntry
-import avaliable_destinations
-
+        
 class Authentication(Datbase):
 
     def __init__(self  ):
@@ -53,8 +51,6 @@ root.resizable(False, False)
 
 def close():
     root.destroy()
-
-
 
 
 class Home(Authentication):
