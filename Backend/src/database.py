@@ -272,6 +272,6 @@ obj = Datbase()
 # print(obj.Show_all_passangers_data())
 # obj.update_flight_avaliable_seats(1,134)
 # print(obj.Show_all_flights_data())
-    
 
-
+# obj.Insert_data_flights("DubaiAirLine","Pk111",50,45,"Lahore","Dubai",datetime.datetime(2021,1,6,3,15,00),datetime.datetime(2021,1,6,10,00,00),datetime.datetime.now())  
+# print(obj.Show_all_flights_data())

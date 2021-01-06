@@ -8,16 +8,16 @@ import avaliable_destinations
 
 class Authentication(Datbase):
 
-    def __init__(self , txt_user, txt_pass):
-        self.txt_user = txt_user
-        self.txt_pass = txt_pass
-    def check_username_password(self):
-        username = self.txt_user.get()
-        password = self.txt_pass.get()
+    def __init__(self  ):
+        pass
+    def check_username_password(self,txt_user, txt_pass):
+        username = txt_user.get()
+        password = txt_pass.get()
         if username:
             if password:
                 obj = Datbase() #creating the object of DATABASSE CLASS
                 values = obj.Show_all_users_data() #calling ShowFunction FROM DATABASECLASS
+                blackflag = False
                 for value in values:
                     usern = value[3]
                     passw = value[5]
@@ -26,14 +26,21 @@ class Authentication(Datbase):
                         close()
                         obj = Home()                      
                         obj.view(self.pk)
-                        
+                        blackflag = True
+                    else:
+                        blackflag = False
+                if blackflag == False :
+                    BothFlag = 3
+                    return BothFlag
                 else:
                     pass
             else:
-                print("Password is Missing")
-        else:
-            print("User Name is is Missing")
+                PasswordFlag = 2
+                return PasswordFlag
 
+        else:
+            UsernameFlag = 1
+            return UsernameFlag
 
 
 
@@ -53,6 +60,7 @@ def close():
 class Home(Authentication):
     def __init__(self):
         pass
+    
 
     def view(self,pk):    
     
@@ -70,17 +78,18 @@ class Home(Authentication):
                         font = ("Arial",35,"bold"))
 
         myLabel.place(x = 375, y = 25)
+        def closehome():
+            root.destroy()
         for val in value:
             first = val[1]
             second = val[2]
         name = (f"User: {first} {second}")
         username = Label(root , text=name , font = ("Arial",10), bg = "grey78" )
         username.place(x=1300 , y=10)
-
+        Flights_obj = Flights()
         #Buttons
-        flightobject = Flight_Schedule()
         b1 = Button(root, text = "Flight Schedule", padx = 90, pady = 90,
-                    font = ("Arial",15), bg = "white", command=flightobject.view)
+                    font = ("Arial",15), bg = "white", command=Flights_obj.view)
 
         b1.place(x = 150, y = 130)
         Buy_Tickets_obj = Buy_Tickets()
@@ -94,31 +103,194 @@ class Home(Authentication):
 
         b3.place(x = 950, y = 130)
 
-        b4 = Button(root, text = "Flight Records", padx = 90, pady = 90,
+        b4 = Button(root, text = "Add a Flight", padx = 90, pady = 90,
                     font = ("Arial",15), bg = "white")
 
         b4.place(x = 150, y = 450)
 
-        b5 = Button(root, text = "Logout", padx = 90, pady = 90,
-                    font = ("Arial",15), bg = "white")
+        UpdateUser_obj = UpdateUser()
+        b5 = Button(root, text = "Username/Password", padx = 90, pady = 90,
+                    font = ("Arial",15), bg = "white",command=UpdateUser_obj.view)
 
-        b5.place(x = 550, y = 450)
+        b5.place(x = 550, y = 450 )
 
-        b6 = Button(root, text = "Button 6", padx = 90, pady = 90,
-                    font = ("Arial",15), bg = "white")
+        b6 = Button(root, text = "Logout", padx = 90, pady = 90,
+                    font = ("Arial",15), bg = "white",command=closehome)
 
         b6.place(x = 950, y = 450)
+
 
         root.mainloop()
 
  
-class Flight_Schedule:
+class Flights:
     def __init__(self):
         pass
     def view(self):
-        obj = Home()
-        # all_flight_data =  obj.Show_all_flights_data()
-        # print(all_flight_data)
+        root=Tk()
+        root.geometry("1400x800+100+1")
+        root.title("Flights record")
+        
+    
+        Frame_Records=Frame(root,bg="white")
+        Frame_Records.place(relx=0.5,rely=0.5,anchor=CENTER,height=750,width=1300)
+        
+        title=Label(Frame_Records,text="Flights record",font=("Impact",35,"bold"),fg="black",bg="white")
+        title.place(x=400,y=50)
+        
+        txt_search=Entry(Frame_Records,font=("times new roman",15),bg="white")
+        txt_search.insert(0,"Search")
+        txt_search.place(x=750,y=130,width=250,height=25)
+        
+        btn=Button(Frame_Records,text="Button",bg="white",fg="black",font=("times new roman",15))
+        btn.place(x=1010,y=130,width=100,height=25)
+        
+ 
+        tree_frame = Frame(Frame_Records)
+        tree_frame.place(relx=0.5,rely=0.6,anchor=CENTER,height=550,width=1100)
+
+        tree_scroll = Scrollbar(tree_frame)
+        tree_scroll.pack(side=RIGHT, fill=Y)
+
+        # Create Treeview
+        my_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode="extended")
+        my_tree.place(relx=0.5,rely=0.5,anchor=CENTER,height=450,width=1000)
+
+        tree_scroll.config(command=my_tree.yview)
+
+        # Define Our Columns
+        my_tree['columns'] = ("ID", "Company", "Flight Number","Seats","Avaliable Seats" ,"From","To","Departure Time","Arrival Time")
+
+        # Formate Our Columns
+        my_tree.column("#0", width=0, stretch=NO)
+        my_tree.column("ID",  width=20)
+        my_tree.column("Company",  width=100)
+        my_tree.column("Flight Number",  width=100)
+        my_tree.column("Seats",  width=100)
+        my_tree.column("Avaliable Seats", width=100)
+        my_tree.column("From", width=100)
+        my_tree.column("To",  width=100)
+        my_tree.column("Departure Time",  width=100)
+        my_tree.column("Arrival Time",  width=100)
+
+        # Create Headings 
+        my_tree.heading("#0", text="" )
+        my_tree.heading("ID", text="ID" )
+        my_tree.heading("Company", text="Company"  )
+        my_tree.heading("Flight Number", text="Flight Number"  )
+        my_tree.heading("Seats", text="Seats")
+        my_tree.heading("Avaliable Seats", text="Avaliable Seats")
+        my_tree.heading("From", text="From")
+        my_tree.heading("To", text="To" )
+        my_tree.heading("Departure Time", text="Departure Time")
+        my_tree.heading("Arrival Time", text="Arrival Time")
+
+        obj = Datbase()
+        data = obj.Show_all_flights_data()
+        my_tree.tag_configure('oddrow', background="white")
+        my_tree.tag_configure('evenrow', background="lightblue")
+
+        global count
+        count=0
+
+        for record in data:
+            if count % 2 == 0:
+                my_tree.insert(parent='', index='end', iid=count, text="", values=(record[0], record[1], record[2] ,record[3], record[4], record[5],record[6] , record[7] ,record[8] , record[9] ), tags=('evenrow',))
+            else:
+                my_tree.insert(parent='', index='end', iid=count, text="", values=(record[0], record[1], record[2] ,  record[3],record[4] , record[5] ,record[6] , record[7],record[8] , record[9] ),tags=('oddrow',))
+
+            count += 1
+        btn2=Button(Frame_Records,text="Update",bg="white",fg="black",font=("times new roman",15))
+        btn2.place(x=130,y=130,width=100,height=25)            
+        root.mainloop()
+
+
+
+class UpdateUser:
+    def __init__(self):
+        pass
+    def view(self):            
+        root = Tk(className="User Information")
+        root.geometry("800x700")
+
+        Myframe = Frame(root,bg = "white")
+        Myframe.place(relx = 0.5, rely = 0.5, anchor = CENTER,
+                    height = 600,width = 650)
+
+        Label1 = Label(Myframe, text = "User Information",
+                    font = ("Times New Roman",35,"bold"),
+                    bg = "white")
+
+        Label1.place(relx = 0.5, rely = 0.1, anchor = CENTER)
+
+        first_Name = Label(Myframe, text = "First Name",
+                    font = ("Times New Roman",16), bg = "white")
+
+        first_Name.place(x = 70, y = 120 )
+
+        Entry1 = Entry(Myframe,font = ("Times New Roman",14),
+                    width = 20)
+
+        Entry1.place(x = 70, y = 160)
+
+
+        Last_Name = Label(Myframe, text = "Last Name",
+                    font = ("Times New Roman",16), bg = "white")
+
+        Last_Name.place(x = 370, y = 120 )
+
+        Entry2 = Entry(Myframe,font = ("Times New Roman",14),
+                    width = 20)
+
+        Entry2.place(x = 370, y = 160)
+
+        Email = Label(Myframe, text = "Email",
+                    font = ("Times New Roman",16), bg = "white")
+
+        Email.place(x = 70, y = 220 )
+
+        Entry3 = Entry(Myframe,font = ("Times New Roman",14),
+                    width = 20)
+
+        Entry3.place(x = 70, y = 260)
+
+        Cnfrm_Email = Label(Myframe, text = "Confirm Email",
+                    font = ("Times New Roman",16), bg = "white")
+
+        Cnfrm_Email.place(x = 370, y = 220 )
+
+        Entry3 = Entry(Myframe,font = ("Times New Roman",14),
+                    width = 20)
+
+        Entry3.place(x = 370, y = 260)
+
+        Password = Label(Myframe, text = "Password",
+                    font = ("Times New Roman",16), bg = "white")
+
+        Password.place(x = 70, y = 320 )
+
+        Entry4 = Entry(Myframe, show="*" ,font = ("Times New Roman",14),
+                    width = 20)
+
+        Entry4.place(x = 70, y = 360)
+
+        Cnfrm_pass = Label(Myframe, text = "Confirm Password",
+                    font = ("Times New Roman",16), bg = "white")
+
+        Cnfrm_pass.place(x = 370, y = 320 )
+
+        Entry5 = Entry(Myframe, show="*" ,font = ("Times New Roman",14),
+                    width = 20)
+
+        Entry5.place(x = 370, y = 360)
+
+        Button1 = Button(Myframe, text = "Update",
+                        font = ("Times New Roman",20),
+                    bg = "white")
+        Button1.place(relx = 0.5, rely = 0.8, anchor = CENTER)
+
+
+        root.mainloop()
 
 
 # importing but_tickets Class
@@ -149,42 +321,55 @@ class Add_Flight():
 
 
 class LoginWindow(Datbase):
+    def __init__(self):
+        pass
 
-    Frame_Login=Frame(root,bg="white")
-    Frame_Login.place(relx=0.5,rely=0.5, anchor = CENTER ,  height=380,width=500)
+    def view(self):
+        Frame_Login=Frame(root,bg="white")
+        Frame_Login.place(relx=0.5,rely=0.5, anchor = CENTER ,  height=380,width=500)
 
-    title=Label(Frame_Login,text="Login ",font=("Impact",35,"bold"),fg="black",bg="white")
-    title.place(x=90,y=30)
+        title=Label(Frame_Login,text="Login ",font=("Impact",35,"bold"),fg="black",bg="white")
+        title.place(x=90,y=30)
 
-    desc=Label(Frame_Login,text="Management Login Area",font=("Goudy old style",15,"bold"),fg="black",bg="white")
-    desc.place(x=90,y=100)
+        desc=Label(Frame_Login,text="Management Login Area",font=("Goudy old style",15,"bold"),fg="black",bg="white")
+        desc.place(x=90,y=100)
 
-    lbl_user=Label(Frame_Login,text="User Name",font=("Goudy old style",15,"bold"),fg="black",bg="white")
-    lbl_user.place(x=90,y=140)
-    
-    txt_user=Entry(Frame_Login,font=("times new roman",15),bg="white")
-    txt_user.place(x=90,y=170,width=350,height=35)
+        lbl_user=Label(Frame_Login,text="User Name",font=("Goudy old style",15,"bold"),fg="black",bg="white")
+        lbl_user.place(x=90,y=140)
+        
+        txt_user=Entry(Frame_Login,font=("times new roman",15),bg="white")
+        txt_user.place(x=90,y=170,width=350,height=35)
 
-    lbl_pass=Label(Frame_Login,text="Password",font=("Goudy old style",15,"bold"),fg="black",bg="white")
-    lbl_pass.place(x=90,y=210)
-    
-    txt_pass=Entry(Frame_Login,font=("times new roman",15),bg="white")
-    txt_pass.place(x=90,y=240,width=350,height=35)
-
-    forget_btn=Button(Frame_Login,text="forget password",bg="white",fg="black",bd=0,font=("times new roman",12))
-    forget_btn.place(x=90,y=280)
-
-    #creating object of Authentication Class
-    obj = Authentication(txt_user,txt_pass) 
-
-    login_btn=Button(Frame_Login,text="Login",bg="white",fg="black",font=("times new roman",15),command=obj.check_username_password)
-    login_btn.place(x=90,y=320,width=180,height=40)
-    root.mainloop()
+        lbl_pass=Label(Frame_Login,text="Password",font=("Goudy old style",15,"bold"),fg="black",bg="white")
+        lbl_pass.place(x=90,y=210)
+        
+        txt_pass=Entry(Frame_Login,font=("times new roman",15),bg="white")
+        txt_pass.config(show="*")
+        txt_pass.place(x=90,y=240,width=350,height=35)
 
 
 
-class Logout():
-    pass
+        #creating object of Authentication Class
+        obj = Authentication() 
+        def run():
+            returned = obj.check_username_password(txt_user,txt_pass)
+            if returned == 1:
+                forget_btn=Label(Frame_Login,text="Username Missing",bg="white",fg="red",font=("times new roman",12))
+                forget_btn.place(x=90,y=280)
+            if returned ==2:
+                forget_btn=Label(Frame_Login,text="Password Missing",bg="white",fg="red",font=("times new roman",12))
+                forget_btn.place(x=90,y=280)
+            if returned == 3 :
+                forget_btn=Label(Frame_Login,text="Username or Password Wrong",bg="white",fg="red",font=("times new roman",12))
+                forget_btn.place(x=90,y=280)         
+
+        login_btn=Button(Frame_Login,text="Login",bg="white",fg="black",font=("times new roman",15),command=run)
+        login_btn.place(x=90,y=320,width=180,height=40)
+        root.mainloop()
 
 
+
+# running here
+runloginwindowobj = LoginWindow()
+runloginwindowobj.view()
 

@@ -5,15 +5,16 @@ import os
 from database import *
 from tkcalendar import  DateEntry
 import avaliable_destinations
+
 class Buy_Tickets:
     def __init__(self):
-        pass
+        pass #constructor 
 
-    def buy(self ):
+    def buy(self):
         obj = Datbase()
         root=Tk()
-        root.title("Passenger Information")
-        root.geometry("1199x600+100+50")        
+        root.title("Buy Ticket")
+        root.geometry("1199x800+100+1")        
         def close():
             root.destroy()
         #BuyTicket Information
@@ -48,7 +49,7 @@ class Buy_Tickets:
         fg="black",bg="white")
         lbl_birth.place(x=90,y=300)
         cal = DateEntry(Buy_ticket_frame, width=12, background='white',
-                            foreground='white', borderwidth=2, year=2010)
+                            foreground='black', borderwidth=2, year=1997)
         cal.place(x=90,y=330,width=250,height=30)
 
 
@@ -75,14 +76,14 @@ class Buy_Tickets:
         Destination_label.place(x=450,y=380)
         clicked = StringVar(Buy_ticket_frame)
         clicked.set("select Here")
-        drop_down_destinations=OptionMenu(Buy_ticket_frame, clicked, *avaliable_destinations.aval_destination)
+        drop_down_destinations= OptionMenu(Buy_ticket_frame, clicked, *avaliable_destinations.aval_destination)
         drop_down_destinations.place(x=450,y=410,width=250,height=30)
 
 
         def check():
-            s = clicked.get()
+            location = clicked.get()
             flight = []
-            avaliable_flights_list =  obj.show_specif_flight_data(s)
+            avaliable_flights_list =  obj.show_specif_flight_data(location)
             for x in avaliable_flights_list:
                 id = x[0]
                 flight_name = x[2]
@@ -97,7 +98,7 @@ class Buy_Tickets:
 
         Avaliable_flights_label=Label(Buy_ticket_frame,text="Avaliable Flights",font=("Goudy old style",15,"bold"),fg="black",bg="white")
         Avaliable_flights_label.place(x=90,y=460)
-        refresh_btn=Button(Buy_ticket_frame,text="",bg="white",fg="black",command=check, font=("times new roman",15))
+        refresh_btn=Button(Buy_ticket_frame,text="",bg="white",fg="black", command=check, font=("times new roman",15))
         refresh_btn.place(x=250,y=460,width=30,height=20)
         clicked2 = StringVar(Buy_ticket_frame)
         clicked2.set("select Here")
@@ -149,7 +150,9 @@ class Buy_Tickets:
                 print(val)
                 val2 = obj.Show_all_flights_data()
                 print (val2)
-                close()                
+                close()  
+            else:
+                print("No seats Avaliable")              
                 
         submit_btn=Button(Buy_ticket_frame,text="Submit", command=confirm_ticket, bg="white",fg="black",font=("times new roman",15))
         submit_btn.place(x=90,y=540,width=180,height=40)
