@@ -1,4 +1,5 @@
-from tkinter import*
+#imports here
+from tkinter import *
 from tkinter import ttk
 import smtplib
 import os
@@ -6,25 +7,29 @@ from database import *
 from tkcalendar import  DateEntry
 import avaliable_destinations
 
+
+
 class Buy_Tickets:
     def __init__(self):
-        pass #constructor 
+        pass 
 
     def buy(self):
         obj = Datbase()
         root=Tk()
         root.title("Buy Ticket")
-        root.geometry("1199x800+100+1")        
+        root.geometry("1199x800+100+1") 
+
         def close():
             root.destroy()
-        #BuyTicket Information
+
         Buy_ticket_frame=Frame(root,bg="white")
         Buy_ticket_frame.place(relx=0.5,rely=0.5, anchor = CENTER ,height=650,width=800)
         
         title =Label(Buy_ticket_frame,text="Passenger Information",font=("Impact",35,"bold"),fg="black",bg="white")
         title.place(x=90,y=30)
 
-        lbl_first_name=Label(Buy_ticket_frame,text="First Name",font=("Goudy old style",15,"bold"),fg="black",bg="white")
+        lbl_first_name=Label(Buy_ticket_frame,text="First Name",
+        font=("Goudy old style",15,"bold"),fg="black",bg="white")
         lbl_first_name.place(x=90,y=140)
         txt_first_name=Entry(Buy_ticket_frame,font=("times new roman",15),bg="white")
         txt_first_name.place(x=90,y=170,width=250,height=30)
@@ -106,8 +111,7 @@ class Buy_Tickets:
         drop_down_flights.place(x=90,y=490,width=250,height=30)
 
         def send_mail(address,first_name,last_name,flight_name,flight_num , flight_time ):            
-            EMAIL_ADDRESS = 'Husnainahmadgame@gmail.com'
-            EMAIL_PASSWORD = 'Anmolschool1'
+            from usernamepassword import EMAIL_ADDRESS , EMAIL_PASSWORD
 
             with smtplib.SMTP('smtp.gmail.com',587 ) as smtp:
                 smtp.ehlo()
@@ -141,7 +145,6 @@ class Buy_Tickets:
                 flight_time = s[7]  
                 aval_seats = s[4]              
             created = datetime.datetime.now()
-            # print(flight_number)
             if aval_seats >= 1 :
                 obj.Insert_data_passengers(first_name,last_name,email,cnic,date_of_birth,nationality,gender,flight_number,created,flightid)
                 obj.update_flight_avaliable_seats(flightid,aval_seats)
