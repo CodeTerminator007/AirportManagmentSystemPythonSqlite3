@@ -91,7 +91,7 @@ class Home(Authentication):
         username.place(x=1300 , y=10)
         Flights_obj = Flights()
         #Buttons
-        b1 = Button(root, text = "Flight Schedule", padx = 90, pady = 90,
+        b1 = Button(root, text = "Flights", padx = 90, pady = 90,
                     font = ("Arial",15), bg = "white", command=Flights_obj.view)
 
         b1.place(x = 150, y = 130)
@@ -101,7 +101,7 @@ class Home(Authentication):
 
         b2.place(x = 550, y = 130)
 
-        b3 = Button(root, text = "Passanger Record", padx = 90, pady = 90,
+        b3 = Button(root, text = "Passangers", padx = 90, pady = 90,
                     font = ("Arial",15), bg = "white")
 
         b3.place(x = 950, y = 130)
@@ -112,7 +112,7 @@ class Home(Authentication):
         b4.place(x = 150, y = 450)
 
         UpdateUser_obj = UpdateUser()
-        b5 = Button(root, text = "Username/Password", padx = 90, pady = 90,
+        b5 = Button(root, text = "User/Setting", padx = 90, pady = 90,
                     font = ("Arial",15), bg = "white",command=UpdateUser_obj.view)
 
         b5.place(x = 550, y = 450 )
@@ -143,11 +143,9 @@ class Flights:
         title.place(x=400,y=50)
         
         txt_search=Entry(Frame_Records,font=("times new roman",15),bg="white")
-        txt_search.insert(0,"Search")
         txt_search.place(x=750,y=130,width=250,height=25)
         
-        btn=Button(Frame_Records,text="Button",bg="white",fg="black",font=("times new roman",15))
-        btn.place(x=1010,y=130,width=100,height=25)
+        
          
         tree_frame = Frame(Frame_Records)
         tree_frame.place(relx=0.5,rely=0.6,anchor=CENTER,height=550,width=1100)
@@ -155,154 +153,178 @@ class Flights:
         tree_scroll = Scrollbar(tree_frame)
         tree_scroll.pack(side=RIGHT, fill=Y)
 
-        # Create Treeview
+        #Tree view Here
         my_tree = ttk.Treeview(tree_frame, yscrollcommand=tree_scroll.set, selectmode="extended")
         my_tree.place(relx=0.5,rely=0.5,anchor=CENTER,height=450,width=1000)
 
         tree_scroll.config(command=my_tree.yview)
 
-        # Define Our Columns
+        # Tree View Columns
         my_tree['columns'] = ("ID", "Company", "Flight Number","Seats",
         "Avaliable Seats" ,"From","To","Departure Time","Arrival Time")
 
-        def selectItem():
-            root = Tk(className="User Information")
-            root.geometry("800x700+400+0")
-            def closethis():
-                root.destroy()
-            Myframe = Frame(root,bg = "white")
-            Myframe.place(relx = 0.5, rely = 0.5, anchor = CENTER,
-                        height = 600,width = 650)
+        def selectItemUpdate():
+            curItem = my_tree.focus()
+            dict_val = my_tree.item(curItem)  #Getting Seleted item
+            tt = {'text': '', 'image': '', 'values': '', 'open': 0, 'tags': ''}
+            if dict_val == tt:
+                tkMessageBox.showinfo('','Please Select a Flight you want to Update . ',icon='warning',parent=Frame_Records)
+            else:
+                root = Tk(className="User Information")
+                root.geometry("800x700+400+0")
+                def closethis():
+                    root.destroy()
+                Myframe = Frame(root,bg = "white")
+                Myframe.place(relx = 0.5, rely = 0.5, anchor = CENTER,
+                            height = 600,width = 650)
 
-            Label1 = Label(Myframe, text = "Flight Information",
-                        font = ("Times New Roman",35,"bold"),
-                        bg = "white")
-        
+                Label1 = Label(Myframe, text = "Flight Information",
+                            font = ("Times New Roman",35,"bold"),
+                            bg = "white")
+                
+
+                data = dict_val['values']
+
+                #specifieng the values from list
+                theid = data[0]
+                companyname = data[1]
+                flightnumber = data[2]
+                totalseats = data[3]
+                avalseats = data[4]
+                fromwhere = data[5]
+                towhere = data[6]
+                departuretime = data[7]
+                arrivaltime = data[8]
+
+                def save():    
+                    result = tkMessageBox.askquestion('', 'Are you sure you want change', icon='question',parent=Myframe)                
+                    if result == 'yes':
+                        obj = Datbase()
+                        obj.update_flight_with_pk(theid,company_name_enter.get(),flight_number_enter.get(),
+                        total_seats_enter.get(),avaliable_seats_enter.get(),from_where_enter.get(),
+                        to_where_enter.get(),departure_time_enter.get(),arrival_time_enter.get())
+                        closethis()
+                Label1.place(relx = 0.5, rely = 0.1, anchor = CENTER)
+
+                company_name = Label(Myframe, text = "Company Name",
+                            font = ("Times New Roman",16), bg = "white")
+
+                company_name.place(x = 70, y = 120 )
+
+                company_name_enter = Entry(Myframe,font = ("Times New Roman",14),
+                            width = 20)
+                company_name_enter.place(x = 70, y = 160)
+                company_name_enter.insert(0,companyname)
+
+
+                flight_number = Label(Myframe, text = "Flight Number",
+                            font = ("Times New Roman",16), bg = "white")
+
+                flight_number.place(x = 370, y = 120 )
+
+                flight_number_enter = Entry(Myframe,font = ("Times New Roman",14),
+                            width = 20)
+
+                flight_number_enter.place(x = 370, y = 160)
+                flight_number_enter.insert(0,flightnumber )           
+
+                total_seats = Label(Myframe, text = "Total Seats",
+                            font = ("Times New Roman",16), bg = "white")
+
+                total_seats.place(x = 70, y = 220 )
+
+                total_seats_enter = Entry(Myframe,font = ("Times New Roman",14),
+                            width = 20)
+
+                total_seats_enter.place(x = 70, y = 260)
+                total_seats_enter.insert(0,totalseats)
+
+                avaliable_seats = Label(Myframe, text = "Available Seats",
+                            font = ("Times New Roman",16), bg = "white")
+
+                avaliable_seats.place(x = 370, y = 220 )
+
+                avaliable_seats_enter = Entry(Myframe,font = ("Times New Roman",14),
+                            width = 20)
+
+                avaliable_seats_enter.place(x = 370, y = 260)
+                avaliable_seats_enter.insert(0,avalseats)
+
+                from_where = Label(Myframe, text = "From",
+                            font = ("Times New Roman",16), bg = "white")
+
+                from_where.place(x = 70, y = 320 )
+
+                from_where_enter = Entry(Myframe ,font = ("Times New Roman",14),
+                            width = 20)
+
+                from_where_enter.place(x = 70, y = 360)
+                from_where_enter.insert(0,fromwhere)
+
+                to_where = Label(Myframe, text = "To",
+                            font = ("Times New Roman",16), bg = "white")
+
+                to_where.place(x = 370, y = 320 )
+
+                to_where_enter = Entry(Myframe,font = ("Times New Roman",14),
+                            width = 20)
+
+                to_where_enter.place(x = 370, y = 360)
+                to_where_enter.insert(0,towhere)
+
+
+                departure_time = Label(Myframe, text = "Departure Time",
+                            font = ("Times New Roman",16), bg = "white")
+
+                departure_time.place(x = 70, y = 420 )
+
+                departure_time_enter = Entry(Myframe ,font = ("Times New Roman",14),
+                            width = 20)
+
+                departure_time_enter.place(x = 70, y = 460)
+                departure_time_enter.insert(0,departuretime)
+
+
+                arrival_time = Label(Myframe, text = "Arrival Time",
+                            font = ("Times New Roman",16), bg = "white")
+
+                arrival_time.place(x = 370, y = 420 )
+
+                arrival_time_enter = Entry(Myframe,font = ("Times New Roman",14),
+                            width = 20)
+
+                arrival_time_enter.place(x = 370, y = 460)            
+                arrival_time_enter.insert(0,arrivaltime)
+
+
+                Button1 = Button(Myframe, text = "Change",font = ("Times New Roman",15),bg = "white" , command=save)
+                Button1.place(relx = 0.2, rely = 0.9)
+
+
+                root.mainloop()
+        def selectItemdelete():
             curItem = my_tree.focus()
             dict_val = my_tree.item(curItem)
-
-            data = dict_val['values']
-            #specifieng the values from list
-            theid = data[0]
-            companyname = data[1]
-            flightnumber = data[2]
-            totalseats = data[3]
-            avalseats = data[4]
-            fromwhere = data[5]
-            towhere = data[6]
-            departuretime = data[7]
-            arrivaltime = data[8]
-
-            def save():
-                result = tkMessageBox.askquestion('', 'Are you sure you want change', icon='question',parent=Myframe)                
-                if result == 'yes':
-                    obj = Datbase()
-                    obj.update_flight_with_pk(theid,company_name_enter.get(),flight_number_enter.get(),
-                    total_seats_enter.get(),avaliable_seats_enter.get(),from_where_enter.get(),
-                    to_where_enter.get(),departure_time_enter.get(),arrival_time_enter.get())
-                    closethis()
-            Label1.place(relx = 0.5, rely = 0.1, anchor = CENTER)
-
-            company_name = Label(Myframe, text = "Company Name",
-                        font = ("Times New Roman",16), bg = "white")
-
-            company_name.place(x = 70, y = 120 )
-
-            company_name_enter = Entry(Myframe,font = ("Times New Roman",14),
-                        width = 20)
-            company_name_enter.place(x = 70, y = 160)
-            company_name_enter.insert(0,companyname)
+            tt = {'text': '', 'image': '', 'values': '', 'open': 0, 'tags': ''}
+            if dict_val == tt:
+                tkMessageBox.showinfo('','Please Select a Flight you want to delete . ',icon='warning',parent=Frame_Records)
+            else:
+                data = dict_val['values']
+                result = tkMessageBox.askquestion('','Are you sure you want to delete the selected flight data remember it cannot be recovered.',icon='question',parent=Frame_Records)
+                if result == 'yes':            
+                    theid = data[0]                
+                    obj.Delete_flight_pk(theid)
 
 
-            flight_number = Label(Myframe, text = "Flight Number",
-                        font = ("Times New Roman",16), bg = "white")
-
-            flight_number.place(x = 370, y = 120 )
-
-            flight_number_enter = Entry(Myframe,font = ("Times New Roman",14),
-                        width = 20)
-
-            flight_number_enter.place(x = 370, y = 160)
-            flight_number_enter.insert(0,flightnumber )           
-
-            total_seats = Label(Myframe, text = "Total Seats",
-                        font = ("Times New Roman",16), bg = "white")
-
-            total_seats.place(x = 70, y = 220 )
-
-            total_seats_enter = Entry(Myframe,font = ("Times New Roman",14),
-                        width = 20)
-
-            total_seats_enter.place(x = 70, y = 260)
-            total_seats_enter.insert(0,totalseats)
-
-            avaliable_seats = Label(Myframe, text = "Available Seats",
-                        font = ("Times New Roman",16), bg = "white")
-
-            avaliable_seats.place(x = 370, y = 220 )
-
-            avaliable_seats_enter = Entry(Myframe,font = ("Times New Roman",14),
-                        width = 20)
-
-            avaliable_seats_enter.place(x = 370, y = 260)
-            avaliable_seats_enter.insert(0,avalseats)
-
-            from_where = Label(Myframe, text = "From",
-                        font = ("Times New Roman",16), bg = "white")
-
-            from_where.place(x = 70, y = 320 )
-
-            from_where_enter = Entry(Myframe ,font = ("Times New Roman",14),
-                        width = 20)
-
-            from_where_enter.place(x = 70, y = 360)
-            from_where_enter.insert(0,fromwhere)
-
-            to_where = Label(Myframe, text = "To",
-                        font = ("Times New Roman",16), bg = "white")
-
-            to_where.place(x = 370, y = 320 )
-
-            to_where_enter = Entry(Myframe,font = ("Times New Roman",14),
-                        width = 20)
-
-            to_where_enter.place(x = 370, y = 360)
-            to_where_enter.insert(0,towhere)
 
 
-            departure_time = Label(Myframe, text = "Departure Time",
-                        font = ("Times New Roman",16), bg = "white")
 
-            departure_time.place(x = 70, y = 420 )
+        #Update and Delete buttons
+        updateflight_btn=Button(Frame_Records,text="Update",bg="white",fg="black",font=("times new roman",15),command=selectItemUpdate)
+        updateflight_btn.place(x=130,y=130,width=100,height=25) 
 
-            departure_time_enter = Entry(Myframe ,font = ("Times New Roman",14),
-                        width = 20)
-
-            departure_time_enter.place(x = 70, y = 460)
-            departure_time_enter.insert(0,departuretime)
-
-
-            arrival_time = Label(Myframe, text = "Arrival Time",
-                        font = ("Times New Roman",16), bg = "white")
-
-            arrival_time.place(x = 370, y = 420 )
-
-            arrival_time_enter = Entry(Myframe,font = ("Times New Roman",14),
-                        width = 20)
-
-            arrival_time_enter.place(x = 370, y = 460)            
-            arrival_time_enter.insert(0,arrivaltime)
-
-
-            Button1 = Button(Myframe, text = "Change",font = ("Times New Roman",15),bg = "white" , command=save)
-            Button1.place(relx = 0.2, rely = 0.9)
-
-
-            root.mainloop()
-
-        # Formate Our Columns
-        btn2=Button(Frame_Records,text="Update",bg="white",fg="black",font=("times new roman",15),command=selectItem)
-        btn2.place(x=130,y=130,width=100,height=25) 
+        delete_flight=Button(Frame_Records,text="Delete",bg="white",fg="black",font=("times new roman",15),command=selectItemdelete)
+        delete_flight.place(x=250,y=130,width=100,height=25)
 
         my_tree.column("#0", width=0, stretch=NO)
         my_tree.column("ID",  width=20)
@@ -328,7 +350,7 @@ class Flights:
         my_tree.heading("Arrival Time", text="Arrival Time")
 
         obj = Datbase()
-        data = obj.Show_all_flights_data()
+        data = obj.Show_all_flights_data() #all flights data list here
         my_tree.tag_configure('oddrow', background="white")
         my_tree.tag_configure('evenrow', background="lightblue")
 
@@ -342,6 +364,24 @@ class Flights:
                 my_tree.insert(parent='', index='end', iid=count, text="", values=(record[0], record[1], record[2] ,  record[3],record[4] , record[5] ,record[6] , record[7],record[8] , record[9] ),tags=('oddrow',))
 
             count += 1
+        def search_function():
+            if  txt_search.get() =='':
+                tkMessageBox.showinfo('','Please enter the location of flight you want to search.',icon='warning',parent=Frame_Records)
+            else:
+                data_entered = txt_search.get()
+                result_list = obj.show_specif_flight_data(data_entered)
+                for i in my_tree.get_children():
+                    my_tree.delete(i)
+                for record in result_list:
+                    count=0
+                    if count % 2 == 0:
+                        my_tree.insert(parent='', index='end', iid=count, text="", values=(record[0], record[1], record[2] ,record[3], record[4], record[5],record[6] , record[7] ,record[8] , record[9] ), tags=('evenrow',))
+                    else:
+                        my_tree.insert(parent='', index='end', iid=count, text="", values=(record[0], record[1], record[2] ,  record[3],record[4] , record[5] ,record[6] , record[7],record[8] , record[9] ),tags=('oddrow',))
+
+                
+        search_btn=Button(Frame_Records,text="Search",bg="white",fg="black",font=("times new roman",15),command=search_function)
+        search_btn.place(x=1010,y=130,width=100,height=25)        
            
         root.mainloop()
 

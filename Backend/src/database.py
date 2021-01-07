@@ -36,7 +36,7 @@ class Datbase:
             no_of_seats int NOT NULL,
             no_of_seats_avaliable int,
             source text NOT NULL,                        
-            destination text NOT NULL,
+            destination text NOT NULL ,
             timedate_departure timestamp NOT NULL ,
             timedate_arrival timestamp NOT NULL,
             created timestamp NOT NULL,
@@ -246,7 +246,7 @@ class Datbase:
     def show_specif_flight_data(self,destination):
         conn = sqlite3.connect('database.db')
         currsor = conn.cursor()
-        currsor.execute("SELECT * FROM flights WHERE destination = ?",[destination])
+        currsor.execute("SELECT * FROM flights WHERE destination = ? COLLATE NOCASE ",[destination])
         datas = currsor.fetchall()
         conn.commit()
         conn.close()
@@ -275,7 +275,14 @@ class Datbase:
         datas = currsor.fetchall()
         conn.commit()
         conn.close()
-        return datas                                
+        return datas                            
+
+    def Delete_flight_pk(self,pk): 
+        conn = sqlite3.connect('database.db')
+        currsor = conn.cursor()
+        currsor.execute("DELETE FROM flights WHERE flightid=?" ,[pk])
+        conn.commit()
+        conn.close()   
 
 obj = Datbase()
 # obj.Create_database()
@@ -285,12 +292,5 @@ obj = Datbase()
 # obj.Insert_data_flights("AmericanAirLine","GH1S",155,134,"Lahore","London",datetime.datetime(2020,2,22,1,15,00),datetime.datetime(2020,2,22,12,00,00),datetime.datetime.now())
 # obj.Insert_data_users("Hussnain",'Ahmad','admin',"aliahmad522@gmail.com","admin",datetime.datetime.now())
 # obj.Insert_data_passengers("Ali","Ahmad","Hussnainahmad@gmail.com",555256324,datetime.datetime(1997,2,12),"Pakistani","Male","B1AA",datetime.datetime.now(),'2')
-# obj.Delete_data()
-# obj.Show_data()
-# obj.show_specif_user_data(2)
-# print(obj.Show_all_passangers_data())
-# obj.update_flight_avaliable_seats(1,134)
-# print(obj.Show_all_flights_data())
 
 # obj.Insert_data_flights("DubaiAirLine","Pk111",50,45,"Lahore","Dubai",datetime.datetime(2021,1,6,3,15,00),datetime.datetime(2021,1,6,10,00,00),datetime.datetime.now())  
-# print(obj.Show_all_flights_data())
