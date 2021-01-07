@@ -1,6 +1,7 @@
 from tkinter import*
 from tkinter import ttk
 import os
+import tkinter.messagebox as tkMessageBox
 from database import *
 from tkcalendar import  DateEntry
         
@@ -42,7 +43,6 @@ class Authentication(Datbase):
 
 
 
-
 # Login page root here
 root=Tk()
 root.title("Login System")
@@ -75,7 +75,9 @@ class Home(Authentication):
 
         myLabel.place(x = 375, y = 25)
         def closehome():
-            root.destroy()
+            result = tkMessageBox.askquestion('', 'Are you sure you want to quit', icon="warning") 
+            if result ==  "yes":
+                root.destroy()
         for val in value:
             first = val[1]
             second = val[2]
@@ -350,14 +352,11 @@ class LoginWindow(Datbase):
         def run():
             returned = obj.check_username_password(txt_user,txt_pass)
             if returned == 1:
-                forget_btn=Label(Frame_Login,text="Username Missing",bg="white",fg="red",font=("times new roman",12))
-                forget_btn.place(x=90,y=280)
+                tkMessageBox.showwarning('', 'Username Field is empty', icon="warning") 
             if returned ==2:
-                forget_btn=Label(Frame_Login,text="Password Missing",bg="white",fg="red",font=("times new roman",12))
-                forget_btn.place(x=90,y=280)
+                tkMessageBox.showwarning('', 'Password Field is empty', icon="warning") 
             if returned == 3 :
-                forget_btn=Label(Frame_Login,text="Username or Password Wrong",bg="white",fg="red",font=("times new roman",12))
-                forget_btn.place(x=90,y=280)         
+                tkMessageBox.showwarning('', 'Wrong Username or Password', icon="warning")         
 
         login_btn=Button(Frame_Login,text="Login",bg="white",fg="black",font=("times new roman",15),command=run)
         login_btn.place(x=90,y=320,width=180,height=40)

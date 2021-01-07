@@ -6,6 +6,8 @@ import os
 from database import *
 from tkcalendar import  DateEntry
 import avaliable_destinations
+import re 
+import tkinter.messagebox as tkMessageBox
 
 
 
@@ -53,6 +55,7 @@ class Buy_Tickets:
         lbl_birth=Label(Buy_ticket_frame,text="Date of birth",font=("Goudy old style",15,"bold"),
         fg="black",bg="white")
         lbl_birth.place(x=90,y=300)
+
         cal = DateEntry(Buy_ticket_frame, width=12, background='white',
                             foreground='black', borderwidth=2, year=1997)
         cal.place(x=90,y=330,width=250,height=30)
@@ -125,33 +128,100 @@ class Buy_Tickets:
 
                 msg = f"Subject:{subject}\n\n {body}"
                 smtp.sendmail(EMAIL_ADDRESS,address , msg)
-                
         def confirm_ticket():
+            #getting variable and values
+            global email      
             first_name = txt_first_name.get()
             last_name = txt_last_name.get()
-            email = txt_email.get()
-            cnic = int(txt_cnic.get())
+            unvalidated_email = txt_email.get()                
+            unvalidated_cnic = txt_cnic.get()
             date_of_birth = cal.get_date()
             nationality = txt_nationality.get()
             gender = selector.get()
             flight = clicked2.get()
-            flightid = int(flight[0])
-            real_flight = obj.show_specif_flight_data_with_pk(flightid)
             flight_name = ""
-            flight_number = ""
-            for s in real_flight:
-                flight_number = s[2]
-                flight_name = s[1]
-                flight_time = s[7]  
-                aval_seats = s[4]              
+            flight_number = ""          
             created = datetime.datetime.now()
-            if aval_seats >= 1 :
-                obj.Insert_data_passengers(first_name,last_name,email,cnic,date_of_birth,nationality,gender,flight_number,created,flightid)
-                obj.update_flight_avaliable_seats(flightid,aval_seats)
-                send_mail(email,first_name,last_name,flight_name,flight_number,flight_time)
-                close()  
+
+            #defining the Boolean value to see if the form is empty
+            blackflag1 =False
+            blackflag2 =False 
+            blackflag3 =False 
+            blackflag4 = False 
+            blackflag5 =False 
+            blackflag6 =False 
+            blackflag7  =False 
+            blackflag8 = False
+
+            if first_name == '':
+                dot=Label(Buy_ticket_frame,text="*",font=("Goudy old style",20,"bold"),
+                fg="red",bg="white")
+                dot.place(x=60,y=170)
+                blackflag1 = True
+            if last_name == '':
+                dot=Label(Buy_ticket_frame,text="*",font=("Goudy old style",20,"bold"),
+                fg="red",bg="white")
+                dot.place(x=420,y=170)
+                blackflag2 = True
+            regex = '^[A-Za-z0-9]+[\._]?[A-Za-z0-9]+[@]\w+[.]\w{2,3}$'
+            if re.search(regex,unvalidated_email):
+                email = unvalidated_email
             else:
-                print("No seats Avaliable")              
+                dot=Label(Buy_ticket_frame,text="*",font=("Goudy old style",20,"bold"),
+                fg="red",bg="white")
+                dot.place(x=60,y=250)
+                blackflag3 = True
+            regex_cnic = '^[0-9]\w{8,13}$'      
+            if re.search(regex_cnic,unvalidated_cnic):
+                cnic= unvalidated_cnic
+            else:
+                dot=Label(Buy_ticket_frame,text="*",font=("Goudy old style",20,"bold"),
+                fg="red",bg="white")
+                dot.place(x=420,y=250)
+                blackflag4 = True
+
+            if date_of_birth == '':
+                dot=Label(Buy_ticket_frame,text="*",font=("Goudy old style",20,"bold"),
+                fg="red",bg="white")
+                dot.place(x=60,y=330)
+                blackflag5 = True 
+            if nationality == '':
+                dot=Label(Buy_ticket_frame,text="*",font=("Goudy old style",20,"bold"),
+                fg="red",bg="white")
+                dot.place(x=420,y=330)
+                blackflag6 = True
+            if gender =='':
+                dot=Label(Buy_ticket_frame,text="*",font=("Goudy old style",20,"bold"),
+                fg="red",bg="white")
+                dot.place(x=60,y=410) 
+                blackflag7 = True           
+            if flight=='select Here':
+                dot=Label(Buy_ticket_frame,text="*",font=("Goudy old style",20,"bold"),
+                fg="red",bg="white")
+                dot.place(x=60,y=490)  
+                blackflag8 = True
+            else:
+                flightid = int(flight[0])
+                real_flight = obj.show_specif_flight_data_with_pk(flightid)
+                for s in real_flight:
+                    flight_number = s[2]
+                    flight_name = s[1]
+                    flight_time = s[7]  
+                    aval_seats = s[4]                    
+                                     
+                
+            if blackflag1 ==False and blackflag2 ==False and blackflag3==False and blackflag4 == False and blackflag5==False and blackflag6 == False and blackflag7 == False and blackflag8 == False:
+                if aval_seats >= 1 :
+                    result = tkMessageBox.askquestion('','Confirm the ticket', icon="warning",parent=Buy_ticket_frame)     
+                    if result == 'yes':            
+                        obj.Insert_data_passengers(first_name,last_name,email,cnic,date_of_birth,nationality,gender,flight_number,created,flightid)
+                        obj.update_flight_avaliable_seats(flightid,aval_seats)
+                        send_mail(email,first_name,last_name,flight_name,flight_number,flight_time)
+                        close()  
+                else:
+                    tkMessageBox.showwarning('', 'No seats Avaliable ', icon="warning",parent=Buy_ticket_frame)
+            else:
+                    tkMessageBox.showwarning('', 'Looks Like Some Data is Missing .!', icon="warning" ,parent=Buy_ticket_frame) 
                 
         submit_btn=Button(Buy_ticket_frame,text="Submit", command=confirm_ticket, bg="white",fg="black",font=("times new roman",15))
         submit_btn.place(x=90,y=540,width=180,height=40)

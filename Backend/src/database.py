@@ -52,7 +52,7 @@ class Datbase:
             first_name text NOT NULL,
             last_name text NOT NULL,
             email text NOT NULL,
-            cnic int UNIQUE,
+            cnic text UNIQUE,
             date_of_birth timestamp NOT NULL,                        
             nationality text NOT NULL,
             gender text NOT NULL ,
