@@ -19,7 +19,8 @@ class Datbase:
             username text NOT NULL UNIQUE, 
             email text NOT NULL UNIQUE,
             password text NOT NULL,
-            datecreated timestamp NOT NULL 
+            datecreated timestamp NOT NULL,
+            updatedtime timestamp NOT NULL 
         )
         """)        
         conn.commit()
@@ -38,7 +39,8 @@ class Datbase:
             destination text NOT NULL,
             timedate_departure timestamp NOT NULL ,
             timedate_arrival timestamp NOT NULL,
-            created timestamp NOT NULL
+            created timestamp NOT NULL,
+            updatedtime timestamp NOT NULL
         )
         """)        
         conn.commit()
@@ -58,7 +60,8 @@ class Datbase:
             gender text NOT NULL ,
             flight_number text NOT NULL,
             flightid int NOT NULL,
-            created timestamp NOT NULL,            
+            created timestamp NOT NULL,
+            updatedtime timestamp NOT NULL,            
             FOREIGN KEY(flightid) REFERENCES flights (flightid)            
 
         );
@@ -83,10 +86,12 @@ class Datbase:
                             'gender',
                             'flight_number',
                             'created',
-                            'flightid'                                                        
-                            ) 
-                            VALUES ( ?,?,?,?,?,?,?,?,?,?);"""
+                            'flightid',
+                            'updatedtime'
 
+                            ) 
+                            VALUES ( ?,?,?,?,?,?,?,?,?,?,?);"""
+            updatedtime = datetime.datetime.now()                        
             data_tuple = (
                 first_name,
                 last_name,
@@ -97,7 +102,8 @@ class Datbase:
                 gender,
                 flight_number,
                 created ,
-                flightid
+                flightid,
+                updatedtime        
                            
             )
 
@@ -119,7 +125,7 @@ class Datbase:
         try:
             conn = sqlite3.connect('database.db')
             currsor = conn.cursor()
-
+            updatedtime = datetime.datetime.now()
             insert_with_param = """INSERT INTO users 
                             (
                             'first_name',
@@ -127,10 +133,13 @@ class Datbase:
                             'username',
                             'email',
                             'password',
-                            'datecreated') 
-                            VALUES ( ?, ?,?,?, ?, ?);"""
+                            'datecreated',
+                            updatedtime            
 
-            data_tuple = (first_name, last_name,username, email, password, datecreated)
+                            ) 
+                            VALUES ( ?, ?,?,?, ?, ?,?);"""
+
+            data_tuple = (first_name, last_name,username, email, password, datecreated , updatedtime)
             currsor.execute(insert_with_param, data_tuple)
             conn.commit()
             print("Data Inserted in User Table..")
@@ -159,10 +168,11 @@ class Datbase:
                             'destination',
                             'timedate_departure',
                             'timedate_arrival',
-                            'created'
+                            'created',
+                            'updatedtime'
                             ) 
-                            VALUES ( ?, ?,?, ?, ?,?, ?, ?,?);"""
-
+                            VALUES ( ?, ?,?, ?, ?,?, ?, ?,?,?);"""
+            updatedtime = datetime.datetime.now()
             data_tuple = (
                 airline_name,
                 flight_number,
@@ -172,7 +182,8 @@ class Datbase:
                 destination,
                 timedate_departure,
                 timedate_arrival,
-                created            
+                created,
+                updatedtime            
             )
 
             currsor.execute(insert_with_param, data_tuple)
@@ -221,7 +232,16 @@ class Datbase:
         datas = currsor.fetchall()
         conn.commit()
         conn.close()
-        return datas                        
+        return datas 
+    def update_flight_with_pk(self,pk,companyname,flightnumber,totalseats,avalseats,fromwhere,towhere,departuretime,arrivaltime):
+        conn = sqlite3.connect('database.db')
+        currsor = conn.cursor()
+        updatetime = datetime.datetime.now()
+        currsor.execute("Update flights set airline_name = ? , flight_number=? ,  no_of_seats=? , no_of_seats_avaliable=? , source = ? ,destination = ?, timedate_departure = ?, timedate_arrival = ?, updatedtime = ? WHERE flightid = ? ",[companyname,flightnumber,totalseats,avalseats,fromwhere,towhere,departuretime,arrivaltime,updatetime,pk])
+        datas = currsor.fetchall()
+        conn.commit()
+        conn.close()
+        return datas                                
              
     def show_specif_flight_data(self,destination):
         conn = sqlite3.connect('database.db')
