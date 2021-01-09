@@ -100,18 +100,18 @@ class Buy_Tickets:
                 flight += [f"{id} {flight_name} {flight_num} leaves on {flight_time}"]
                 
             drop_down_flights=OptionMenu(Buy_ticket_frame, clicked2, *flight)        
-            drop_down_flights.place(x=90,y=490,width=250,height=30)
+            drop_down_flights.place(x=250,y=490,width=350,height=30)
 
 
 
         Avaliable_flights_label=Label(Buy_ticket_frame,text="Avaliable Flights",font=("Goudy old style",15,"bold"),fg="black",bg="white")
-        Avaliable_flights_label.place(x=90,y=460)
+        Avaliable_flights_label.place(x=300,y=460)
         refresh_btn=Button(Buy_ticket_frame,text="",bg="white",fg="black", command=check, font=("times new roman",15))
         refresh_btn.place(x=250,y=460,width=30,height=20)
         clicked2 = StringVar(Buy_ticket_frame)
         clicked2.set("select Here")
         drop_down_flights=OptionMenu(Buy_ticket_frame, clicked2, "default")        
-        drop_down_flights.place(x=90,y=490,width=250,height=30)
+        drop_down_flights.place(x=250,y=490,width=350,height=30)
 
         def send_mail(address,first_name,last_name,flight_name,flight_num , flight_time ):            
             from usernamepassword import EMAIL_ADDRESS , EMAIL_PASSWORD
@@ -136,6 +136,7 @@ class Buy_Tickets:
             unvalidated_email = txt_email.get()                
             unvalidated_cnic = txt_cnic.get()
             date_of_birth = cal.get_date()
+            print(type(date_of_birth))
             nationality = txt_nationality.get()
             gender = selector.get()
             flight = clicked2.get()
