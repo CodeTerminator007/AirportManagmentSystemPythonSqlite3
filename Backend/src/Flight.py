@@ -10,7 +10,7 @@ class Flights:
     def view(self):
         root=Tk()
         root.geometry("1400x800+100+1")
-        root.title("Flights record")
+        root.title("Flights Records")
         
     
         Frame_Records=Frame(root,bg="white")
@@ -231,7 +231,7 @@ class Flights:
         my_tree.tag_configure('oddrow', background="white")
         my_tree.tag_configure('evenrow', background="lightblue")
 
-        global count
+        global count1
         count=0
 
         for record in data:
@@ -243,19 +243,32 @@ class Flights:
             count += 1
         def search_function():
             if  txt_search.get() =='':
-                tkMessageBox.showinfo('','Please enter the location of flight you want to search.',icon='warning',parent=Frame_Records)
+                for i in my_tree.get_children():
+                    my_tree.delete(i)
+                global count2
+                count2=0
+                allflight = obj.Show_all_flights_data()
+                for record in allflight:
+                    
+                    if count2 % 2 == 0:
+                        my_tree.insert(parent='', index='end', iid=count2, text="", values=(record[0], record[1], record[2] ,record[3], record[4], record[5],record[6] , record[7] ,record[8] , record[9] ), tags=('evenrow',))
+                    else:
+                        my_tree.insert(parent='', index='end', iid=count2, text="", values=(record[0], record[1], record[2] ,  record[3],record[4] , record[5] ,record[6] , record[7],record[8] , record[9] ),tags=('oddrow',))
+                    count2 += 1                                    
             else:
                 data_entered = txt_search.get()
                 result_list = obj.show_specif_flight_data(data_entered)
                 for i in my_tree.get_children():
                     my_tree.delete(i)
+                global count1
+                count1=0
                 for record in result_list:
-                    count=0
-                    if count % 2 == 0:
-                        my_tree.insert(parent='', index='end', iid=count, text="", values=(record[0], record[1], record[2] ,record[3], record[4], record[5],record[6] , record[7] ,record[8] , record[9] ), tags=('evenrow',))
+                    
+                    if count1 % 2 == 0:
+                        my_tree.insert(parent='', index='end', iid=count1, text="", values=(record[0], record[1], record[2] ,record[3], record[4], record[5],record[6] , record[7] ,record[8] , record[9] ), tags=('evenrow',))
                     else:
-                        my_tree.insert(parent='', index='end', iid=count, text="", values=(record[0], record[1], record[2] ,  record[3],record[4] , record[5] ,record[6] , record[7],record[8] , record[9] ),tags=('oddrow',))
-
+                        my_tree.insert(parent='', index='end', iid=count1, text="", values=(record[0], record[1], record[2] ,  record[3],record[4] , record[5] ,record[6] , record[7],record[8] , record[9] ),tags=('oddrow',))
+                    count1 += 1
                 
         search_btn=Button(Frame_Records,text="Search",bg="white",fg="black",font=("times new roman",15),command=search_function)
         search_btn.place(x=1010,y=130,width=100,height=25)        

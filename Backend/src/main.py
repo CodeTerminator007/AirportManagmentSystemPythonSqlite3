@@ -105,9 +105,9 @@ class Home(Authentication):
                     font = ("Arial",15), bg = "white" , command=Passangers_obj.view)
 
         b3.place(x = 950, y = 130)
-
+        Addflightbj = ADD_FLIGHT()
         b4 = Button(root, text = "Add a Flight", padx = 90, pady = 90,
-                    font = ("Arial",15), bg = "white")
+                    font = ("Arial",15), bg = "white" ,command=Addflightbj.view)
 
         b4.place(x = 150, y = 450)
 
@@ -136,20 +136,7 @@ from User import UpdateUser
 from Buy import Buy_Tickets
 
 
-
-
-
-class Add_Flight():
-    def __init__(self):
-        pass
-    def view(self):
-        pass
-    def insert_flight(self,airlineName,flightnumber,noofseats,noofseatsavaliable,source,destination,timedatedeparture,timedatearrival):
-
-        obj = Datbase()
-        obj.Insert_data_flights(airlineName,flightnumber,noofseats,noofseatsavaliable,source,destination,timedatedeparture,timedatearrival , datetime.datetime.now())
-
-        pass
+from AddFlight import ADD_FLIGHT
 
 
 

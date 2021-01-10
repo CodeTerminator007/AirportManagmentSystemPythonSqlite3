@@ -254,6 +254,16 @@ class Datbase:
         conn.close()
         return datas
 
+    def show_specif_passanger_data_search(self, search):
+        conn = sqlite3.connect('database.db')
+        currsor = conn.cursor()
+        currsor.execute(
+            "SELECT * FROM passengers WHERE first_name LIKE ? COLLATE NOCASE OR flight_number=? COLLATE NOCASE OR last_name LIKE ?  COLLATE NOCASE OR nationality like ? COLLATE NOCASE", ["%"+search+"%", search, "%"+search+"%","%"+search+"%"])
+        datas = currsor.fetchall()
+        conn.commit()
+        conn.close()
+        return datas
+
     def show_specif_flight_data_with_pk(self, pk):
         conn = sqlite3.connect('database.db')
         currsor = conn.cursor()
