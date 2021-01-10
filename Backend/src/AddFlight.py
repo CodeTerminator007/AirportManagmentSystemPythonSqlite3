@@ -1,5 +1,4 @@
 from tkinter import *
-from tkinter import ttk
 from database import Datbase
 import datetime
 import tkinter.messagebox as tkMessageBox
