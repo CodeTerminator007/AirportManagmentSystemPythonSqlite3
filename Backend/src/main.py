@@ -56,13 +56,7 @@ class Home(Authentication):
         myLabel = Label(HomeFrame, text = "Airport Managment System",font = ("Arial",35,"bold"))
         myLabel.place(x = 375, y = 25)
 
-        def closehome():
-            result = tkMessageBox.askquestion('', 'Are you sure you want to quit', icon="question") 
-            if result ==  "yes":
-                root.destroy()
-            else:
-                pass
-
+        #logged Username 
         for val in value:
             first_name = val[1]
             second_name = val[2]
@@ -92,6 +86,13 @@ class Home(Authentication):
 
         b5 = Button(HomeFrame, text = "User", padx = 90, pady = 90,font = ("Arial",15), bg = "white",command=UpdateUser_obj.view)
         b5.place(x = 550, y = 450 ,width=300,height =200)
+
+        def closehome():
+            result = tkMessageBox.askquestion('', 'Are you sure you want to quit', icon="question") 
+            if result ==  "yes":
+                root.destroy()
+            else:
+                pass
 
         b6 = Button(HomeFrame, text = "Logout", padx = 90, pady = 90,font = ("Arial",15), bg = "white",command=closehome)
         b6.place(x = 950, y = 450,width=300,height =200)

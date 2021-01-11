@@ -6,7 +6,7 @@ class UpdateUser:
     def __init__(self):
         pass
     def view(self):            
-        root = Tk(className="User Information")
+        root = Tk(className="Airport Managment System : User Information")
         root.geometry("800x700")
 
         Myframe = Frame(root,bg = "white")

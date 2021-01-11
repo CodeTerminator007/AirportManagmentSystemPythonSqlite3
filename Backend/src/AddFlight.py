@@ -12,7 +12,7 @@ class ADD_FLIGHT:
     def view(self):
         obj = Database()
         root=Tk()
-        root.title("Add Flight")
+        root.title("Airport Managment System : Add Flight")
         root.geometry("1199x800+100+1") 
 
         def close():

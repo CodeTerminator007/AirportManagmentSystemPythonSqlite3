@@ -11,7 +11,7 @@ class Flights:
     def view(self):
         root=Tk()
         root.geometry("1400x800+100+1")
-        root.title("Flights Records")
+        root.title("Airport Managment System : Flights Records")
         
     
         Frame_Records=Frame(root,bg="white")

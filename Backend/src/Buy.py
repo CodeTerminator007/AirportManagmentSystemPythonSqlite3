@@ -16,7 +16,7 @@ class Buy_Tickets:
     def buy(self):
         obj = Database()
         root=Tk()
-        root.title("Buy Ticket")
+        root.title("Airport Managment System : Buy Ticket")
         root.geometry("1199x800+100+1") 
 
         def close():
