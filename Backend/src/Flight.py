@@ -18,7 +18,7 @@ class Flights:
         Frame_Records.place(relx=0.5,rely=0.5,anchor=CENTER,height=750,width=1300)
         
         title=Label(Frame_Records,text="Flights record",font=("Impact",35,"bold"),fg="black",bg="white")
-        title.place(x=400,y=50)
+        title.place(relx=0.37,y=50)
     
         
                  
@@ -248,7 +248,7 @@ class Flights:
                 arrival_time_enter.insert(0,arrivaltime)
 
 
-                Button1 = Button(Myframe, text = "Change",font = ("Times New Roman",15),bg = "white" , command=Update)
+                Button1 = Button(Myframe, text = "Update",font = ("Times New Roman",15),bg = "white" , command=Update)
                 Button1.place(relx = 0.2, rely = 0.9)
 
 

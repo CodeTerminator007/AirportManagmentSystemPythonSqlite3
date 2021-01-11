@@ -258,7 +258,16 @@ class Database:
         datas = currsor.fetchall()
         conn.commit()
         conn.close()
-        return datas        
+        return datas
+
+    def show_specif_flight_data_with_destination(self,destination):
+        conn = sqlite3.connect('database.db')
+        currsor = conn.cursor()
+        currsor.execute("SELECT * FROM flights WHERE destination = ?", [destination])
+        datas = currsor.fetchall()
+        conn.commit()
+        conn.close()
+        return datas                
 
     def Show_all_passangers_data(self):
         conn = sqlite3.connect('database.db')

@@ -38,14 +38,14 @@ class Passangers():
         #Creating Columns and Headings
         my_tree.column("#0", width=0, stretch=NO)
         my_tree.column("ID", width=20)
-        my_tree.column("First Name",  width=100)
-        my_tree.column("Last Name",  width=100)
-        my_tree.column("Email",  width=100)
+        my_tree.column("First Name",  width=60)
+        my_tree.column("Last Name",  width=60)
+        my_tree.column("Email",  width=200)
         my_tree.column("CNIC", width=100)
-        my_tree.column("Date of Birth", width=100)
-        my_tree.column("Nationality", width=100)
-        my_tree.column("Flight", width=100)
-        my_tree.column("Last Modified at",  width=100)
+        my_tree.column("Date of Birth", width=60)
+        my_tree.column("Nationality", width=70)
+        my_tree.column("Flight", width=60)
+        my_tree.column("Last Modified at",  width=150)
 
 
         my_tree.heading("#0", text="" )
@@ -178,7 +178,6 @@ class Passangers():
                 flightnumber = data[7]
                 flight_data = obj.show_specif_flight_data_with_flightnumber(flightnumber)
                 flight_data_tuple = flight_data[0]
-                updated_at = data[8]                                                                 
 
                 first_name = Label(Myframe, text = "First Name",font = ("Times New Roman",16), bg = "white")
                 first_name.place(x = 70, y = 120 )
@@ -244,7 +243,7 @@ class Passangers():
                 clickedhere = StringVar(Myframe)
                 clickedhere.set(f"{flight_data_tuple[0] } {flight_data_tuple[1]} {flight_data_tuple[2]}")
 
-                drop_down_flights= OptionMenu(Myframe, clickedhere, *flight )      
+                drop_down_flights= OptionMenu(Myframe, clickedhere,'Select Flight Here' ,*flight )      
                 drop_down_flights.place(x=270,y=460,width=350,height=30)
 
 
@@ -263,32 +262,37 @@ class Passangers():
                         msg = f"Subject:{subject}\n\n {body}"
                         smtp.sendmail(EMAIL_ADDRESS,address , msg)                
 
-                def Update():    
-                    result = tkMessageBox.askquestion('', 'Are you sure you want change', icon='question',parent=Myframe)
+                def Update():
                     val = clickedhere.get()
-                    flightid = int(val[0]) 
-                    real_flight = obj.show_specif_flight_data_with_pk(flightid)                    
-                    for s in real_flight:
-                        flighname = s[1]
-                        flighttime = s[6]
-                        flight_number = s[2]
-                        aval_seats = s[4]   
-                    if aval_seats >= 1 :
-                        if result == 'yes':
-                            if flight_data_tuple[0] == flightid:
-                                obj.update_passanger_with_pk(theid,first_name_txt.get(),last_name_txt.get(),
-                                email_txt.get(),cnic_txt.get(),cal.get_date(),
-                                nationality_txt.get(),flightid,flight_number)
-                                closeupdatewindow() 
-                            else:
-                                obj.update_passanger_with_pk(theid,first_name_txt.get(),last_name_txt.get(),
-                                email_txt.get(),cnic_txt.get(),cal.get_date(),
-                                nationality_txt.get(),flightid,flight_number)
-                                send_mail(email_txt.get(),first_name_txt.get(),last_name_txt.get(),flighname,flight_number,flighttime)
-                                closeupdatewindow()                                 
-
+                    if val=='Select Flight Here':
+                        tkMessageBox.showinfo('','Please Select a Flight',icon='warning',parent=Myframe)
+                        
                     else:
-                        tkMessageBox.showwarning('', 'No seats Avaliable ', icon="warning",parent=Myframe)  
+                        result = tkMessageBox.askquestion('', 'Are you sure you want change', icon='question',parent=Myframe)
+                        flightid = int(val[0]) 
+                        real_flight = obj.show_specif_flight_data_with_pk(flightid)                    
+                        for s in real_flight:
+                            flighname = s[1]
+                            flighttime = s[6]
+                            flight_number = s[2]
+                            aval_seats = s[4]   
+                        if aval_seats >= 1 :
+                            if result == 'yes':
+                                if flight_data_tuple[0] == flightid:
+                                    obj.update_passanger_with_pk(theid,first_name_txt.get(),last_name_txt.get(),
+                                    email_txt.get(),cnic_txt.get(),cal.get_date(),
+                                    nationality_txt.get(),flightid,flight_number)
+                                    closeupdatewindow() 
+                                else:
+                                    obj.update_passanger_with_pk(theid,first_name_txt.get(),last_name_txt.get(),
+                                    email_txt.get(),cnic_txt.get(),cal.get_date(),
+                                    nationality_txt.get(),flightid,flight_number)
+                                    send_mail(email_txt.get(),first_name_txt.get(),last_name_txt.get(),flighname,flight_number,flighttime)
+                                    closeupdatewindow()                                 
+
+                        else: 
+                                                       
+                            tkMessageBox.showwarning('', 'No seats Avaliable ', icon="warning",parent=Myframe)  
 
                 Button1 = Button(Myframe, text = "Update",font = ("Times New Roman",15),bg = "white" , command=Update)
                 Button1.place(relx = 0.2, rely = 0.9)
@@ -322,7 +326,9 @@ class Passangers():
         txt_search=Entry(Frame_Records,font=("times new roman",15),bg="white")
         txt_search.place(x=750,y=130,width=250,height=25)                
         search_btn=Button(Frame_Records,text="Search",bg="white",fg="black",font=("times new roman",15),command=search_function_btn)
-        search_btn.place(x=1010,y=130,width=100,height=25)        
+        search_btn.place(x=1010,y=130,width=100,height=25)
+                
         #Search bind when a key relase
-        txt_search.bind('<KeyRelease>',search_function)           
+        txt_search.bind('<KeyRelease>',search_function) 
+
         root.mainloop()

@@ -26,7 +26,7 @@ class Buy_Tickets:
         Buy_ticket_frame.place(relx=0.5,rely=0.5, anchor = CENTER ,height=650,width=800)
         
         title =Label(Buy_ticket_frame,text="Passenger Information",font=("Impact",35,"bold"),fg="black",bg="white")
-        title.place(x=90,y=30)
+        title.place(relx=0.2,y=30)
 
         lbl_first_name=Label(Buy_ticket_frame,text="First Name",
         font=("Goudy old style",15,"bold"),fg="black",bg="white")
@@ -99,7 +99,7 @@ class Buy_Tickets:
                 tkMessageBox.showwarning('', 'Select a Destination ', icon="warning",parent=Buy_ticket_frame)
             else:
                 flight = []
-                avaliable_flights_list =  obj.show_specif_flight_data(location)
+                avaliable_flights_list =  obj.show_specif_flight_data_with_destination(location)
                 for x in avaliable_flights_list:
                     id = x[0]
                     flight_name = x[2]
