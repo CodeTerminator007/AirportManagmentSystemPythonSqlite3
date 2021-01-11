@@ -1,5 +1,5 @@
 from tkinter import *
-from database import Datbase
+from database import Database
 import datetime
 import tkinter.messagebox as tkMessageBox
 
@@ -10,7 +10,7 @@ class ADD_FLIGHT:
         pass 
 
     def view(self):
-        obj = Datbase()
+        obj = Database()
         root=Tk()
         root.title("Add Flight")
         root.geometry("1199x800+100+1") 
@@ -179,7 +179,7 @@ class ADD_FLIGHT:
                 Departure_time_obj = datetime.datetime.strptime(Departure_time, '%d/%m/%y %H:%M:%S')                                 
 
 
-            #checking if there is an empty entered value
+            #Checking if there is an empty entered value
             if BlackFlag1 == False and BlackFlag2 ==False and BlackFlag3 == False and BlackFlag4 == False and BlackFlag5 == False and BlackFlag6 ==False:
                 created_time = datetime.datetime.now()
                 obj.Insert_data_flights(Airline_Name,Flight_number,int(Seats),int(Seats_Availiable),Location_From,Location_To,Departure_time_obj,Arrival_time_obj,created_time)

@@ -1,13 +1,11 @@
-#imports here
 from tkinter import *
-from tkinter import ttk
 import smtplib
-import os
-from database import *
 from tkcalendar import  DateEntry
-import avaliable_destinations
 import re 
 import tkinter.messagebox as tkMessageBox
+
+#files import
+from database import *
 
 
 
@@ -16,7 +14,7 @@ class Buy_Tickets:
         pass 
 
     def buy(self):
-        obj = Datbase()
+        obj = Database()
         root=Tk()
         root.title("Buy Ticket")
         root.geometry("1199x800+100+1") 
@@ -52,66 +50,76 @@ class Buy_Tickets:
         txt_cnic.place(x=450,y=250,width=250,height=30)
         
                         
-        lbl_birth=Label(Buy_ticket_frame,text="Date of birth",font=("Goudy old style",15,"bold"),
-        fg="black",bg="white")
+        lbl_birth=Label(Buy_ticket_frame,text="Date of birth",font=("Goudy old style",15,"bold"),fg="black",bg="white")
         lbl_birth.place(x=90,y=300)
-
-        cal = DateEntry(Buy_ticket_frame, width=12, background='white',
-                            foreground='black', borderwidth=2, year=1997)
+        cal = DateEntry(Buy_ticket_frame, width=12, background='white',foreground='black', borderwidth=2, year=1997)
         cal.place(x=90,y=330,width=250,height=30)
 
 
-        lbl_nationality=Label(Buy_ticket_frame,text="Nationality",font=("Goudy old style",15,"bold"),
-        fg="black",bg="white")
+        lbl_nationality=Label(Buy_ticket_frame,text="Nationality",font=("Goudy old style",15,"bold"),fg="black",bg="white")
         lbl_nationality.place(x=450,y=300)
         txt_nationality=Entry(Buy_ticket_frame,font=("times new roman",15),bg="white")
         txt_nationality.place(x=450,y=330,width=250,height=30)
 
 
-        lbl_gender=Label(Buy_ticket_frame,text="Gender",font=("Goudy old style",15,"bold"),
-        fg="black",bg="white")
-        lbl_gender.place(x=90,y=380)
-        
+        lbl_gender=Label(Buy_ticket_frame,text="Gender",font=("Goudy old style",15,"bold"),fg="black",bg="white")
+        lbl_gender.place(x=90,y=380)        
         selector = StringVar(Buy_ticket_frame)
-        male = Radiobutton( Buy_ticket_frame, text="Male", variable=selector , value="Male")
+        male = Radiobutton( Buy_ticket_frame, text="Male",variable=selector , value="Male")
         male.place(x=90,y=410)
+        male.select()
         female=Radiobutton(Buy_ticket_frame,text="Female",variable=selector , value="Female")
         female.place(x=200,y=410)
 
+        #To Get The Cities List Flights are Going
+        avaliable_flights = obj.Show_all_flights_data()
+        aval_destination = []
+        for f in avaliable_flights:
+            cityflag = False
+            city = f[6]
+            for g in aval_destination:
+                if city == g:
+                    cityflag = True
+            
+            if cityflag == False:
+                aval_destination += [city]
 
-        Destination_label=Label(Buy_ticket_frame,text="Destination",font=("Goudy old style",15,"bold"),
-        fg="black",bg="white")
+
+        Destination_label=Label(Buy_ticket_frame,text="Destination",font=("Goudy old style",15,"bold"),fg="black",bg="white")
         Destination_label.place(x=450,y=380)
         clicked = StringVar(Buy_ticket_frame)
-        clicked.set("select Here")
-        drop_down_destinations= OptionMenu(Buy_ticket_frame, clicked, *avaliable_destinations.aval_destination)
+        clicked.set("Select Here")
+        drop_down_destinations= OptionMenu(Buy_ticket_frame, clicked, 'Chose Here',*aval_destination)
         drop_down_destinations.place(x=450,y=410,width=250,height=30)
 
 
-        def check():
+        def show_availiable_flights():
             location = clicked.get()
-            flight = []
-            avaliable_flights_list =  obj.show_specif_flight_data(location)
-            for x in avaliable_flights_list:
-                id = x[0]
-                flight_name = x[2]
-                flight_num = x[1]
-                flight_time = x[7]
-                flight += [f"{id} {flight_name} {flight_num} leaves on {flight_time}"]
-                
-            drop_down_flights=OptionMenu(Buy_ticket_frame, clicked2, *flight)        
-            drop_down_flights.place(x=250,y=490,width=350,height=30)
+            if location == 'Select Here' or location =='Chose Here':
+                tkMessageBox.showwarning('', 'Select a Destination ', icon="warning",parent=Buy_ticket_frame)
+            else:
+                flight = []
+                avaliable_flights_list =  obj.show_specif_flight_data(location)
+                for x in avaliable_flights_list:
+                    id = x[0]
+                    flight_name = x[2]
+                    flight_num = x[1]
+                    flight_time = x[7]
+                    flight += [f"{id} {flight_name} {flight_num} leaves on {flight_time}"]
+                    
+                drop_down_flights=OptionMenu(Buy_ticket_frame,clicked2,'Select Flights Here',*flight )        
+                drop_down_flights.place(x=350,y=540,width=350,height=30)
 
 
 
         Avaliable_flights_label=Label(Buy_ticket_frame,text="Avaliable Flights",font=("Goudy old style",15,"bold"),fg="black",bg="white")
-        Avaliable_flights_label.place(x=300,y=460)
-        refresh_btn=Button(Buy_ticket_frame,text="",bg="white",fg="black", command=check, font=("times new roman",15))
-        refresh_btn.place(x=250,y=460,width=30,height=20)
+        Avaliable_flights_label.place(x=350,y=500)
+        refresh_btn=Button(Buy_ticket_frame,text="Refresh",bg="white",fg="black", command=show_availiable_flights, font=("times new roman",15))
+        refresh_btn.place(x=520,y=505,width=90,height=20)
         clicked2 = StringVar(Buy_ticket_frame)
-        clicked2.set("select Here")
+        clicked2.set("Select Here")
         drop_down_flights=OptionMenu(Buy_ticket_frame, clicked2, "default")        
-        drop_down_flights.place(x=250,y=490,width=350,height=30)
+        drop_down_flights.place(x=350,y=540,width=350,height=30)
 
         def send_mail(address,first_name,last_name,flight_name,flight_num , flight_time ):            
             from usernamepassword import EMAIL_ADDRESS , EMAIL_PASSWORD
@@ -120,7 +128,6 @@ class Buy_Tickets:
                 smtp.ehlo()
                 smtp.starttls()
                 smtp.ehlo()
-
                 smtp.login(EMAIL_ADDRESS , EMAIL_PASSWORD)
 
                 subject = 'Airport Ticket'
@@ -128,15 +135,17 @@ class Buy_Tickets:
 
                 msg = f"Subject:{subject}\n\n {body}"
                 smtp.sendmail(EMAIL_ADDRESS,address , msg)
-        def confirm_ticket():
-            #getting variable and values
-            global email      
+
+
+        def Submit():
+            global email
+
+            #Getting Values      
             first_name = txt_first_name.get()
             last_name = txt_last_name.get()
             unvalidated_email = txt_email.get()                
             unvalidated_cnic = txt_cnic.get()
             date_of_birth = cal.get_date()
-            print(type(date_of_birth))
             nationality = txt_nationality.get()
             gender = selector.get()
             flight = clicked2.get()
@@ -144,7 +153,7 @@ class Buy_Tickets:
             flight_number = ""          
             created = datetime.datetime.now()
 
-            #defining the Boolean value to see if the form is empty
+            #Defining Boolean Values
             blackflag1 =False
             blackflag2 =False 
             blackflag3 =False 
@@ -154,6 +163,8 @@ class Buy_Tickets:
             blackflag7  =False 
             blackflag8 = False
 
+
+            #if Conditions to check if input data is Empty
             if first_name == '':
                 dot=Label(Buy_ticket_frame,text="*",font=("Goudy old style",20,"bold"),
                 fg="red",bg="white")
@@ -196,10 +207,10 @@ class Buy_Tickets:
                 fg="red",bg="white")
                 dot.place(x=60,y=410) 
                 blackflag7 = True           
-            if flight=='select Here':
+            if flight=='Select Here' or flight =='Select Flights Here':
                 dot=Label(Buy_ticket_frame,text="*",font=("Goudy old style",20,"bold"),
                 fg="red",bg="white")
-                dot.place(x=60,y=490)  
+                dot.place(x=330,y=500)  
                 blackflag8 = True
             else:
                 flightid = int(flight[0])
@@ -210,7 +221,9 @@ class Buy_Tickets:
                     flight_time = s[7]  
                     aval_seats = s[4]                    
                                      
-                
+
+
+            #Checking if there is an empty entered value                
             if blackflag1 ==False and blackflag2 ==False and blackflag3==False and blackflag4 == False and blackflag5==False and blackflag6 == False and blackflag7 == False and blackflag8 == False:
                 if aval_seats >= 1 :
                     result = tkMessageBox.askquestion('','Confirm the ticket', icon="warning",parent=Buy_ticket_frame)     
@@ -223,7 +236,9 @@ class Buy_Tickets:
                     tkMessageBox.showwarning('', 'No seats Avaliable ', icon="warning",parent=Buy_ticket_frame)
             else:
                     tkMessageBox.showwarning('', 'Looks Like Some Data is Missing .!', icon="warning" ,parent=Buy_ticket_frame) 
-                
-        submit_btn=Button(Buy_ticket_frame,text="Submit", command=confirm_ticket, bg="white",fg="black",font=("times new roman",15))
+
+
+
+        submit_btn=Button(Buy_ticket_frame,text="Submit", command=Submit, bg="white",fg="black",font=("times new roman",15))
         submit_btn.place(x=90,y=540,width=180,height=40)
         root.mainloop()

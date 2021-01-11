@@ -1,15 +1,12 @@
 from tkinter import*
-from tkinter import ttk
-import os
 import tkinter.messagebox as tkMessageBox
 from database import *
 from tkcalendar import DateEntry
         
-class Authentication(Datbase):
+class Authentication(Database):
 
     def __init__(self  ):
         pass
-
 
     def check_username_password(self,txt_user, txt_pass):
         username = txt_user.get()
@@ -17,8 +14,8 @@ class Authentication(Datbase):
 
         if username:
             if password:
-                obj = Datbase() #creating the object of DATABASSE CLASS
-                values = obj.Show_all_users_data() #calling ShowFunction FROM DATABASECLASS
+                obj = Database() 
+                values = obj.Show_all_users_data()
                 blackflag = False
                 for value in values:
                     usern = value[3]
@@ -63,7 +60,7 @@ class Home(Authentication):
 
     def view(self,pk):    
     
-        obj = Datbase()
+        obj = Database()
 
         value =  obj.show_specif_user_data(pk)
 
@@ -73,9 +70,7 @@ class Home(Authentication):
 
         root.resizable(False, False)
 
-        myLabel = Label(root, text = "Airport Managment System",
-                        font = ("Arial",35,"bold"))
-
+        myLabel = Label(root, text = "Airport Managment System",font = ("Arial",35,"bold"))
         myLabel.place(x = 375, y = 25)
 
         def closehome():
@@ -84,63 +79,52 @@ class Home(Authentication):
                 root.destroy()
 
         for val in value:
-            first = val[1]
-            second = val[2]
-        name = (f"User: {first} {second}")
+            first_name = val[1]
+            second_name = val[2]
+        name = (f"User: {first_name} {second_name}")
         username = Label(root , text=name , font = ("Arial",10), bg = "grey78" )
         username.place(x=1300 , y=10)
+
+        #Objects Of Different Classes
         Flights_obj = Flights()
-        #Buttons
-        b1 = Button(root, text = "Flights", padx = 90, pady = 90,
-                    font = ("Arial",15), bg = "white", command=Flights_obj.view)
-
-        b1.place(x = 150, y = 130)
         Buy_Tickets_obj = Buy_Tickets()
-        b2 = Button(root, text = "Buy Ticket", padx = 90, pady = 90,
-                    font = ("Arial",15), bg = "white", command=Buy_Tickets_obj.buy )
-
-        b2.place(x = 550, y = 130)
         Passangers_obj = Passangers()
-        b3 = Button(root, text = "Passangers", padx = 90, pady = 90,
-                    font = ("Arial",15), bg = "white" , command=Passangers_obj.view)
-
-        b3.place(x = 950, y = 130)
         Addflightbj = ADD_FLIGHT()
-        b4 = Button(root, text = "Add a Flight", padx = 90, pady = 90,
-                    font = ("Arial",15), bg = "white" ,command=Addflightbj.view)
+        UpdateUser_obj = UpdateUser()
 
+
+        b1 = Button(root, text = "Flights", padx = 90, pady = 90,font = ("Arial",15), bg = "white", command=Flights_obj.view)
+        b1.place(x = 150, y = 130)
+
+        b2 = Button(root, text = "Buy Ticket", padx = 90, pady = 90,font = ("Arial",15), bg = "white", command=Buy_Tickets_obj.buy )
+        b2.place(x = 550, y = 130)
+
+        b3 = Button(root, text = "Passangers", padx = 90, pady = 90,font = ("Arial",15), bg = "white" , command=Passangers_obj.view)
+        b3.place(x = 950, y = 130)
+
+        b4 = Button(root, text = "Add a Flight", padx = 90, pady = 90,font = ("Arial",15), bg = "white" ,command=Addflightbj.view)
         b4.place(x = 150, y = 450)
 
-        UpdateUser_obj = UpdateUser()
-        b5 = Button(root, text = "User/Setting", padx = 90, pady = 90,
-                    font = ("Arial",15), bg = "white",command=UpdateUser_obj.view)
-
+        b5 = Button(root, text = "User/Setting", padx = 90, pady = 90,font = ("Arial",15), bg = "white",command=UpdateUser_obj.view)
         b5.place(x = 550, y = 450 )
 
-        b6 = Button(root, text = "Logout", padx = 90, pady = 90,
-                    font = ("Arial",15), bg = "white",command=closehome)
-
+        b6 = Button(root, text = "Logout", padx = 90, pady = 90,font = ("Arial",15), bg = "white",command=closehome)
         b6.place(x = 950, y = 450)
 
 
         root.mainloop()
 
-#Importing the Whole Flights Class Where You can Update Delete And view All Flights Data
+#Importing Classes From Files
 
 from Flight import Flights
-
 from Passanger import Passangers
-
 from User import UpdateUser
-
 from Buy import Buy_Tickets
-
-
 from AddFlight import ADD_FLIGHT
 
 
 
-class LoginWindow(Datbase):
+class LoginWindow(Database):
     def __init__(self):
         pass
 
@@ -167,8 +151,6 @@ class LoginWindow(Datbase):
         txt_pass.config(show="*")
         txt_pass.place(x=90,y=240,width=350,height=35)
 
-
-
         #creating object of Authentication Class
         obj = Authentication() 
         def run():
@@ -185,8 +167,6 @@ class LoginWindow(Datbase):
         root.mainloop()
 
 
-
-# running here
 runloginwindowobj = LoginWindow()
 runloginwindowobj.view()
 

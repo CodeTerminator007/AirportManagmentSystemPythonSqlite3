@@ -2,7 +2,7 @@ import datetime
 import sqlite3
 
 
-class Datbase:
+class Database:
     def __init__(self):
         return
 
@@ -10,6 +10,8 @@ class Datbase:
         conn = sqlite3.connect('database.db')
         conn.close()
 
+
+                                            #Functions To Create Tables     
     def create_users_table(self):
         conn = sqlite3.connect('database.db')
         currsor = conn.cursor()
@@ -70,6 +72,8 @@ class Datbase:
         conn.commit()
         conn.close()
 
+
+                                            #Functions To Insert Data in Tables
     def Insert_data_passengers(self, first_name, last_name, email, cnic, date_of_birth, nationality, gender, flight_number, created, flightid):
 
         try:
@@ -110,7 +114,6 @@ class Datbase:
 
             currsor.execute(insert_with_param, data_tuple)
             conn.commit()
-            print("Data Inserted in passangers Table..")
 
         except sqlite3.Error as error:
             print(f"Error in sqlite3 {error}")
@@ -118,7 +121,6 @@ class Datbase:
         finally:
             if(conn):
                 conn.close()
-                # closing the connection to database
 
     def Insert_data_users(self, first_name, last_name, username, email, password, datecreated):
         try:
@@ -142,7 +144,6 @@ class Datbase:
                           password, datecreated, updatedtime)
             currsor.execute(insert_with_param, data_tuple)
             conn.commit()
-            print("Data Inserted in User Table..")
 
         except sqlite3.Error as error:
             print(f"Error in sqlite3 {error}")
@@ -150,7 +151,6 @@ class Datbase:
         finally:
             if(conn):
                 conn.close()
-                # closing the connection to database
 
     def Insert_data_flights(self, airline_name, flight_number, no_of_seats, no_of_seats_avaliable, source, destination, timedate_departure, timedate_arrival, created):
         try:
@@ -195,8 +195,7 @@ class Datbase:
         finally:
             if(conn):
                 conn.close()
-                # closing the connection to database
-
+                                            #Functions To Show Data in Tables
     def Show_all_users_data(self):
         conn = sqlite3.connect('database.db')
         currsor = conn.cursor()
@@ -224,41 +223,21 @@ class Datbase:
         conn.close()
         return datas
 
-    def update_flight_avaliable_seats(self, pk, avl_seats):
+    def search_specif_flight_data(self, entry):
         conn = sqlite3.connect('database.db')
         currsor = conn.cursor()
-        rem_seats = avl_seats - 1
         currsor.execute(
-            "Update flights set no_of_seats_avaliable = ? Where flightid = ?", [rem_seats, pk])
+            "SELECT * FROM flights WHERE destination LIKE ? COLLATE NOCASE OR flight_number LIKE ? COLLATE NOCASE OR airline_name LIKE ? COLLATE NOCASE or source LIKE ? COLLATE NOCASE", ["%"+entry+"%", "%"+entry+"%", "%"+entry+"%","%"+entry+"%"])
         datas = currsor.fetchall()
         conn.commit()
         conn.close()
         return datas
 
-    def update_flight_with_pk(self, pk, companyname, flightnumber, totalseats, avalseats, fromwhere, towhere, departuretime, arrivaltime):
-        conn = sqlite3.connect('database.db')
-        currsor = conn.cursor()
-        updatetime = datetime.datetime.now()
-        currsor.execute("Update flights set airline_name = ? , flight_number=? ,  no_of_seats=? , no_of_seats_avaliable=? , source = ? ,destination = ?, timedate_departure = ?, timedate_arrival = ?, updatedtime = ? WHERE flightid = ? ", [
-                        companyname, flightnumber, totalseats, avalseats, fromwhere, towhere, departuretime, arrivaltime, updatetime, pk])
-        conn.commit()
-        conn.close()
-
-    def show_specif_flight_data(self, destination):
+    def search_specif_passanger_data(self, search):
         conn = sqlite3.connect('database.db')
         currsor = conn.cursor()
         currsor.execute(
-            "SELECT * FROM flights WHERE destination LIKE ? COLLATE NOCASE OR flight_number=? COLLATE NOCASE OR airline_name LIKE ?", ["%"+destination+"%", destination, "%"+destination+"%"])
-        datas = currsor.fetchall()
-        conn.commit()
-        conn.close()
-        return datas
-
-    def show_specif_passanger_data_search(self, search):
-        conn = sqlite3.connect('database.db')
-        currsor = conn.cursor()
-        currsor.execute(
-            "SELECT * FROM passengers WHERE first_name LIKE ? COLLATE NOCASE OR flight_number=? COLLATE NOCASE OR last_name LIKE ?  COLLATE NOCASE OR nationality like ? COLLATE NOCASE", ["%"+search+"%", search, "%"+search+"%","%"+search+"%"])
+            "SELECT * FROM passengers WHERE first_name LIKE ? COLLATE NOCASE OR flight_number LIKE ? COLLATE NOCASE OR last_name LIKE ?  COLLATE NOCASE OR nationality like ? COLLATE NOCASE OR email LIKE ? COLLATE NOCASE OR cnic LIKE ? COLLATE NOCASE", ["%"+search+"%", "%"+search+"%", "%"+search+"%","%"+search+"%","%"+search+"%","%"+search+"%"])
         datas = currsor.fetchall()
         conn.commit()
         conn.close()
@@ -299,15 +278,41 @@ class Datbase:
         conn.close()
         return datas
 
+                                                #Functions To Update Tables
+
+    def update_flight_avaliable_seats(self, pk, avl_seats):
+        conn = sqlite3.connect('database.db')
+        currsor = conn.cursor()
+        rem_seats = avl_seats - 1
+        currsor.execute(
+            "Update flights set no_of_seats_avaliable = ? Where flightid = ?", [rem_seats, pk])
+        datas = currsor.fetchall()
+        conn.commit()
+        conn.close()
+        return datas
+
+    def update_flight_with_pk(self, pk, companyname, flightnumber, totalseats, avalseats, fromwhere, towhere, departuretime, arrivaltime):
+        conn = sqlite3.connect('database.db')
+        currsor = conn.cursor()
+        updatetime = datetime.datetime.now()
+        currsor.execute("Update flights set airline_name = ? , flight_number=? ,  no_of_seats=? , no_of_seats_avaliable=? , source = ? ,destination = ?, timedate_departure = ?, timedate_arrival = ?, updatedtime = ? WHERE flightid = ? ", [
+                        companyname, flightnumber, totalseats, avalseats, fromwhere, towhere, departuretime, arrivaltime, updatetime, pk])
+        conn.commit()
+        conn.close()
+
+
+
     def update_passanger_with_pk(self, pk, first_name, last_name, email, cnic, date_of_birth, nationality,flightid,flightnum):
         conn = sqlite3.connect('database.db')
         currsor = conn.cursor()
         updatetime = datetime.datetime.now()
-        currsor.execute("Update passengers set first_name = ? , last_name=? , email = ?, cnic=? , date_of_birth=? , nationality = ? ,flightid = ?,flight_number = ? , updatedtime = ? WHERE passengerid = ? ", [
-                        first_name, last_name, email, cnic, date_of_birth, nationality,flightid,flightnum,updatetime, pk])
+        currsor.execute("Update passengers set first_name = ? , last_name=? , email = ?, cnic=? , date_of_birth=? , nationality = ? ,flightid = ?,flight_number = ? , updatedtime = ? WHERE passengerid = ? ",
+        [first_name, last_name, email, cnic, date_of_birth, nationality,flightid,flightnum,updatetime, pk])
         conn.commit()
         conn.close()
 
+
+                                                #Functions to Delete Data From Tables
     def Delete_flight_pk(self, pk):
         conn = sqlite3.connect('database.db')
         currsor = conn.cursor()
@@ -321,16 +326,3 @@ class Datbase:
         currsor.execute("DELETE FROM passengers WHERE passengerid=?", [pk])
         conn.commit()
         conn.close()
-
-
-obj = Datbase()
-# obj.Create_database()
-# obj.create_users_table()
-# obj.create_flights_table()
-# obj.create_passengers_table()
-# obj.Insert_data_flights("AmericanAirLine","GH1S",155,134,"Lahore","London",datetime.datetime(2020,2,22,1,15,00),datetime.datetime(2020,2,22,12,00,00),datetime.datetime.now())
-# obj.Insert_data_users("Hussnain",'Ahmad','admin',"aliahmad522@gmail.com","admin",datetime.datetime.now())
-# obj.Insert_data_passengers("Ali","Ahmad","Hussnainahmad@gmail.com",555256324,datetime.datetime(1997,2,12),"Pakistani","Male","B1AA",datetime.datetime.now(),'2')
-
-# obj.Insert_data_flights("DubaiAirLine","Pk111",50,45,"Lahore","Dubai",datetime.datetime(2021,1,6,3,15,00),datetime.datetime(2021,1,6,10,00,00),datetime.datetime.now())
-# print(obj.Show_all_passangers_data())
