@@ -180,9 +180,11 @@ class UpdateUser:
                     else:
                         pass                
 
+                            
 
-        btn_Update_User = Button(Myframe, text = "Update",font = ("Times New Roman",20),bg = "white",command=UpdateUser)
-        btn_Update_User.place(x=90,y=540,width=180,height=40)
+
+        btn_Update_User = Button(Myframe, text = "Update",font=("times new roman",15),bg = "white",command=UpdateUser)
+        btn_Update_User.place(x=90,y=540,width=180,height=40)      
 
 
         root.mainloop()

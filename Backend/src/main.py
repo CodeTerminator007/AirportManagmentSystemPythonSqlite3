@@ -163,7 +163,13 @@ class LoginWindow(Database):
                 objhome.view(returned)
 
         login_btn=Button(Frame_Login,text="Login",bg="gray9",fg="white",font=("times new roman",15),command=run)
-        login_btn.place(x=90,y=320,width=180,height=40)
+        login_btn.place(x=90,y=320,width=160,height=40)
+        def adduser():            
+            from AddUser import ADDUSER
+            user_obj = ADDUSER()
+            user_obj.view()            
+        adduser_btn = Button(Frame_Login,text="Add User",bg="gray9",fg="white",font=("times new roman",15),command=adduser)
+        adduser_btn.place(x=280,y=320,width=160,height=40)
         root.mainloop()
 
 runloginwindowobj = LoginWindow()
