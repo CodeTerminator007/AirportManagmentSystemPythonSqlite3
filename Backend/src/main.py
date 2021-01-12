@@ -1,8 +1,11 @@
-from tkinter import*
 import tkinter.messagebox as tkMessageBox
-from database import *
+from tkinter import *
+
 from tkcalendar import DateEntry
-        
+
+from database import *
+
+
 class Authentication(Database):
 
     def __init__(self  ):
@@ -53,7 +56,7 @@ class Home(Authentication):
         HomeFrame = Frame(root)
         HomeFrame.place(relx=0.01,rely=0.05,width=1400 ,height=900)
 
-        myLabel = Label(HomeFrame, text = "Airport Managment System",font = ("Arial",35,"bold"))
+        myLabel = Label(HomeFrame, text = "Airport Managment System",font = ("Impact",35,"bold"),bg='white',fg='black')
         myLabel.place(x = 375, y = 25)
 
         #logged Username 
@@ -61,7 +64,7 @@ class Home(Authentication):
             first_name = val[1]
             second_name = val[2]
         name = (f"User: {first_name} {second_name}")
-        username = Label(HomeFrame , text=name , font = ("Arial",10) )
+        username = Label(HomeFrame , text=name , font = ("Arial",10),bg='white',fg='black' )
         username.place(x=1200 , y=10)
 
         #Objects Of Different Classes
@@ -69,22 +72,22 @@ class Home(Authentication):
         Buy_Tickets_obj = Buy_Tickets()
         Passangers_obj = Passangers()
         Addflightbj = ADD_FLIGHT()
-        UpdateUser_obj = UpdateUser()
+        UpdateUser_obj = UpdateUser(pk)
 
 
-        b1 = Button(HomeFrame, text = "Flights", padx = 90, pady = 90,font = ("Arial",15), bg = "white", command=Flights_obj.view)
+        b1 = Button(HomeFrame, text = "Flights", padx = 90, pady = 90,font = ("Arial",15), fg='black',bg = "white", command=Flights_obj.view)
         b1.place(x = 150, y = 130,width=300,height =200)
 
-        b2 = Button(HomeFrame, text = "Buy Ticket", padx = 90, pady = 90,font = ("Arial",15), bg = "white", command=Buy_Tickets_obj.buy )
+        b2 = Button(HomeFrame, text = "Buy Ticket", padx = 90, pady = 90,font = ("Arial",15),fg='black',bg = "white", command=Buy_Tickets_obj.buy )
         b2.place(x = 550, y = 130,width=300,height =200)
 
-        b3 = Button(HomeFrame, text = "Passangers", padx = 90, pady = 90,font = ("Arial",15), bg = "white" , command=Passangers_obj.view)
+        b3 = Button(HomeFrame, text = "Passangers", padx = 90, pady = 90,font = ("Arial",15),fg='black',bg = "white", command=Passangers_obj.view)
         b3.place(x = 950, y = 130,width=300,height =200)
 
-        b4 = Button(HomeFrame, text = "Add a Flight", padx = 90, pady = 90,font = ("Arial",15), bg = "white" ,command=Addflightbj.view)
+        b4 = Button(HomeFrame, text = "Add a Flight", padx = 90, pady = 90,font = ("Arial",15),fg='black',bg = "white" ,command=Addflightbj.view)
         b4.place(x = 150, y = 450 ,width=300,height =200)
 
-        b5 = Button(HomeFrame, text = "User", padx = 90, pady = 90,font = ("Arial",15), bg = "white",command=UpdateUser_obj.view)
+        b5 = Button(HomeFrame, text = "User", padx = 90, pady = 90,font = ("Arial",15),fg='black',bg = "white",command=UpdateUser_obj.view)
         b5.place(x = 550, y = 450 ,width=300,height =200)
 
         def closehome():
@@ -94,7 +97,7 @@ class Home(Authentication):
             else:
                 pass
 
-        b6 = Button(HomeFrame, text = "Logout", padx = 90, pady = 90,font = ("Arial",15), bg = "white",command=closehome)
+        b6 = Button(HomeFrame, text = "Logout", padx = 90, pady = 90,font = ("Arial",15),fg='black',bg = "white",command=closehome)
         b6.place(x = 950, y = 450,width=300,height =200)
 
 
@@ -102,11 +105,12 @@ class Home(Authentication):
 
 #Importing Classes From Files
 
+from AddFlight import ADD_FLIGHT
+from Buy import Buy_Tickets
 from Flight import Flights
 from Passanger import Passangers
 from User import UpdateUser
-from Buy import Buy_Tickets
-from AddFlight import ADD_FLIGHT
+
 
 class LoginWindow(Database):
     def __init__(self):
@@ -116,28 +120,30 @@ class LoginWindow(Database):
         root=Tk()
         root.title("Airport Managment System : Login")
         root.geometry("800x600+400+70")
+        root.configure(background='gray8')
+
         root.resizable(False, False)
 
 
-        Frame_Login=Frame(root,bg="white")
+        Frame_Login=Frame(root,bg="gray8")
         Frame_Login.place(relx=0.5,rely=0.5, anchor = CENTER ,  height=380,width=500)
 
-        title=Label(Frame_Login,text="Login ",font=("Impact",35,"bold"),fg="black",bg="white")
+        title=Label(Frame_Login,text="Login ",font=("Impact",35,"bold"),fg="White",bg="gray8")
         title.place(relx=0.4,y=30)
 
-        desc=Label(Frame_Login,text="Management Login Area",font=("Goudy old style",15,"bold"),fg="black",bg="white")
+        desc=Label(Frame_Login,text="Management Login Area",font=("Goudy old style",15,"bold"),fg="white",bg="gray8")
         desc.place(x=90,y=100)
 
-        lbl_user=Label(Frame_Login,text="User Name",font=("Goudy old style",15,"bold"),fg="black",bg="white")
+        lbl_user=Label(Frame_Login,text="User Name",font=("Goudy old style",15,"bold"),fg="white",bg="gray8")
         lbl_user.place(x=90,y=140)
         
-        txt_user=Entry(Frame_Login,font=("times new roman",15),bg="white")
+        txt_user=Entry(Frame_Login,font=("times new roman",15),bg="gray9",fg='white')
         txt_user.place(x=90,y=170,width=350,height=35)
 
-        lbl_pass=Label(Frame_Login,text="Password",font=("Goudy old style",15,"bold"),fg="black",bg="white")
+        lbl_pass=Label(Frame_Login,text="Password",font=("Goudy old style",15,"bold"),fg="white",bg="gray8")
         lbl_pass.place(x=90,y=210)
         
-        txt_pass=Entry(Frame_Login,font=("times new roman",15),bg="white")
+        txt_pass=Entry(Frame_Login,font=("times new roman",15),bg="gray9",fg='white')
         txt_pass.config(show="*")
         txt_pass.place(x=90,y=240,width=350,height=35)
 
@@ -146,7 +152,7 @@ class LoginWindow(Database):
         def run():
             returned = obj.check_username_password(txt_user,txt_pass)
             if returned == 'username':
-                tkMessageBox.showwarning('', 'Username Field is empty', icon="warning") 
+                tkMessageBox.showwarning('', 'Empty Field', icon="warning") 
             if returned =='password':
                 tkMessageBox.showwarning('', 'Password Field is empty', icon="warning") 
             if returned == 'both' :
@@ -156,7 +162,7 @@ class LoginWindow(Database):
                 root.destroy()
                 objhome.view(returned)
 
-        login_btn=Button(Frame_Login,text="Login",bg="white",fg="black",font=("times new roman",15),command=run)
+        login_btn=Button(Frame_Login,text="Login",bg="gray9",fg="white",font=("times new roman",15),command=run)
         login_btn.place(x=90,y=320,width=180,height=40)
         root.mainloop()
 

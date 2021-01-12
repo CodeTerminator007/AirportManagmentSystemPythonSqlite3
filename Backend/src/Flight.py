@@ -1,7 +1,9 @@
-from tkinter import*
-from tkinter import ttk
 import tkinter.messagebox as tkMessageBox
+from tkinter import *
+from tkinter import ttk
+
 from database import *
+
 
 class Flights:
     def __init__(self):
@@ -10,7 +12,7 @@ class Flights:
 
     def view(self):
         root=Tk()
-        root.geometry("1400x800+100+1")
+        root.geometry("1500x800+0+0")
         root.title("Airport Managment System : Flights Records")
         
     
@@ -39,11 +41,11 @@ class Flights:
     
         #Creating Columns and Headings
         my_tree.column("#0", width=0, stretch=NO)
-        my_tree.column("ID",  width=20)
+        my_tree.column("ID",  width=20,anchor=CENTER)
         my_tree.column("Company",  width=100)
         my_tree.column("Flight Number",  width=100)
-        my_tree.column("Seats",  width=100)
-        my_tree.column("Avaliable Seats", width=100)
+        my_tree.column("Seats",  width=100,anchor=CENTER)
+        my_tree.column("Avaliable Seats", width=100,anchor=CENTER)
         my_tree.column("From", width=100)
         my_tree.column("To",  width=100)
         my_tree.column("Departure Time",  width=100)

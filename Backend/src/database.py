@@ -320,6 +320,15 @@ class Database:
         conn.commit()
         conn.close()
 
+    def update_user_with_pk(self, pk, first_name, last_name, username, email ,password):
+        conn = sqlite3.connect('database.db')
+        currsor = conn.cursor()
+        updatetime = datetime.datetime.now()
+        currsor.execute("Update users set first_name = ? , last_name=? , username = ?, email=? ,  password=? ,updatedtime = ?  WHERE userid = ? ",
+        [first_name, last_name, username,email, password, updatetime, pk])
+        conn.commit()
+        conn.close()
+
 
                                                 #Functions to Delete Data From Tables
     def Delete_flight_pk(self, pk):
@@ -335,3 +344,6 @@ class Database:
         currsor.execute("DELETE FROM passengers WHERE passengerid=?", [pk])
         conn.commit()
         conn.close()
+
+# obj = Database()
+# obj.Insert_data_users('Ali','Ahmad','admin2','Aliahmad631@gmail.com','admin',datetime.datetime.now())

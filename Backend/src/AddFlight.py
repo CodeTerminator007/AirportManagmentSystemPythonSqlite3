@@ -1,8 +1,8 @@
-from tkinter import *
-from database import Database
 import datetime
 import tkinter.messagebox as tkMessageBox
+from tkinter import *
 
+from database import Database
 
 
 class ADD_FLIGHT:
@@ -13,7 +13,7 @@ class ADD_FLIGHT:
         obj = Database()
         root=Tk()
         root.title("Airport Managment System : Add Flight")
-        root.geometry("1199x800+100+1") 
+        root.geometry("1200x800+150+0") 
 
         def close():
             root.destroy()

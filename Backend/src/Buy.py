@@ -1,12 +1,12 @@
-from tkinter import *
+import re
 import smtplib
-from tkcalendar import  DateEntry
-import re 
 import tkinter.messagebox as tkMessageBox
+from tkinter import *
+
+from tkcalendar import DateEntry
 
 #files import
 from database import *
-
 
 
 class Buy_Tickets:
@@ -17,7 +17,7 @@ class Buy_Tickets:
         obj = Database()
         root=Tk()
         root.title("Airport Managment System : Buy Ticket")
-        root.geometry("1199x800+100+1") 
+        root.geometry("1200x800+150+0") 
 
         def close():
             root.destroy()
@@ -122,7 +122,7 @@ class Buy_Tickets:
         drop_down_flights.place(x=350,y=540,width=350,height=30)
 
         def send_mail(address,first_name,last_name,flight_name,flight_num , flight_time ):            
-            from usernamepassword import EMAIL_ADDRESS , EMAIL_PASSWORD
+            from usernamepassword import EMAIL_ADDRESS, EMAIL_PASSWORD
 
             with smtplib.SMTP('smtp.gmail.com',587 ) as smtp:
                 smtp.ehlo()
@@ -175,6 +175,7 @@ class Buy_Tickets:
                 fg="red",bg="white")
                 dot.place(x=420,y=170)
                 blackflag2 = True
+
             regex = '^[A-Za-z0-9]+[\._]?[A-Za-z0-9]+[@]\w+[.]\w{2,3}$'
             if re.search(regex,unvalidated_email):
                 email = unvalidated_email
@@ -183,6 +184,7 @@ class Buy_Tickets:
                 fg="red",bg="white")
                 dot.place(x=60,y=250)
                 blackflag3 = True
+                
             regex_cnic = '^[0-9]\w{8,13}$'      
             if re.search(regex_cnic,unvalidated_cnic):
                 cnic= unvalidated_cnic

@@ -1,16 +1,19 @@
-from tkinter import*
-from tkinter import ttk
 import smtplib
 import tkinter.messagebox as tkMessageBox
-from database import *
+from tkinter import *
+from tkinter import ttk
+
 from tkcalendar import DateEntry
+
+from database import *
+
 
 class Passangers():
     def __init__(self):
         pass
     def view(self):
         root=Tk()
-        root.geometry("1400x800+100+1")
+        root.geometry("1500x800+0+0")
         root.title("Airport Managment System : Passangers Records")
     
         Frame_Records=Frame(root,bg="white")
@@ -248,7 +251,7 @@ class Passangers():
 
 
                 def send_mail(address,first_name,last_name,flight_name,flight_num , flight_time ):            
-                    from usernamepassword import EMAIL_ADDRESS , EMAIL_PASSWORD
+                    from usernamepassword import EMAIL_ADDRESS, EMAIL_PASSWORD
 
                     with smtplib.SMTP('smtp.gmail.com',587 ) as smtp:
                         smtp.ehlo()
