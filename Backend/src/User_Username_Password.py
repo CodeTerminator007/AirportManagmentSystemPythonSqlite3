@@ -28,7 +28,7 @@ class USER_EMAIL:
             lbl_password = Label(Myframe, text = "Password",font = ("Times New Roman",16), bg = "white")
             lbl_password.place(x=90,y=230)
             txt_password = Entry(Myframe, show="*" ,font = ("Times New Roman",14),width = 20)
-            txt_password.place(x=90,y=250,width=250,height=30)
+            txt_password.place(x=90,y=270,width=250,height=30)
             
             def close():
                 root.destroy()
