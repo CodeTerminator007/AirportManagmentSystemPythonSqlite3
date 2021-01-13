@@ -346,4 +346,5 @@ class Database:
 obj = Database()
 obj.create_users_table()
 obj.create_passengers_table()
-obj.create_users_table()
+obj.create_flights_table()
+
