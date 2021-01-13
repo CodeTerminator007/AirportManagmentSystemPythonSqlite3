@@ -1,3 +1,4 @@
+import time
 import tkinter.messagebox as tkMessageBox
 from tkinter import *
 
@@ -47,25 +48,78 @@ class Home(Authentication):
     def view(self,pk):    
         obj = Database()
 
-        value =  obj.show_specif_user_data(pk)
         root = Tk()
         root.title("Airport Managment System : Home")
         root.geometry("1500x1080+10+0")
-
         root.resizable(False, False)
+        #Clock code Here
+        def clock_update():
+            hour = time.strftime("%I")
+            minute = time.strftime("%M")
+            second = time.strftime("%S")
+            am_pm = time.strftime("%p")
+            clock_label.config(text=f'{hour} : {minute} : {second} {am_pm }')
+            clock_label.after(1000,clock_update)
+
+        clock_label = Label(root,text='',fg='black',font = ("times new roman",16,'bold'))
+        clock_label.place(x=1350,y=5)   
+
+
         HomeFrame = Frame(root)
-        HomeFrame.place(relx=0.01,rely=0.05,width=1400 ,height=900)
+        HomeFrame.place(relx=0.01,rely=0.05,width=1470 ,height=1000)
 
-        myLabel = Label(HomeFrame, text = "Airport Managment System",font = ("Impact",35,"bold"),bg='white',fg='black')
-        myLabel.place(x = 375, y = 25)
+        myLabel = Label(root, text = "Airport Managment System",font = ("Impact",35),fg='black')
+        myLabel.place(x = 450, y = 0)
+        clock_update()
 
-        #logged Username 
-        for val in value:
-            first_name = val[1]
-            second_name = val[2]
-        name = (f"User: {first_name} {second_name}")
-        username = Label(HomeFrame , text=name , font = ("Arial",10),bg='white',fg='black' )
-        username.place(x=1200 , y=10)
+
+        color2= 'grey50'
+        #total values of flights passangerd code here
+        total_passangers_frame = Frame(HomeFrame,bg=color2,highlightbackground="white",highlightthickness=2)
+        total_passangers_frame.place(x=180,y=40,width=250,height=140)
+        total_passanger_label = Label(total_passangers_frame,bg=color2,fg='white',text='Total Passangers',font=("times new roman",16,'bold'))
+        total_passanger_label.place(relx=0.2,y=10)
+        total_passanger_num = Label(total_passangers_frame,bg=color2,fg='white',text='',font=("times new roman",20))
+        total_passanger_num.place(relx=0.4,y=60)
+
+
+        total_flights_arrived_frame = Frame(HomeFrame,bg=color2,highlightbackground="white",highlightthickness=2)
+        total_flights_arrived_frame.place(x=580,y=40,width=250,height=140)
+        total_flights_arrived_label = Label(total_flights_arrived_frame,bg=color2,fg='white',text='Flights Arrived',font=("times new roman",16,'bold'))
+        total_flights_arrived_label.place(relx=0.2,y=10)
+        total_flights_arrived_num = Label(total_flights_arrived_frame,bg=color2,fg='white',text='',font=("times new roman",20))
+        total_flights_arrived_num.place(relx=0.4,y=60) 
+
+
+        Departed_flights_num_frame = Frame(HomeFrame,bg=color2,highlightbackground="white",highlightthickness=2)
+        Departed_flights_num_frame.place(x=980,y=40,width=250,height=140)
+        Departed_flights_label = Label(Departed_flights_num_frame,bg=color2,fg='white',text='Departed Flights',font=("times new roman",16,'bold'))
+        Departed_flights_label.place(relx=0.2,y=10)
+        Departed_flights_num = Label(Departed_flights_num_frame,bg=color2,fg='white',text='',font=("times new roman",20))
+        Departed_flights_num.place(relx=0.4,y=60)                   
+
+        def uptime():
+            all_passangers = len(obj.Show_all_passangers_data())
+            all_flights = obj.Show_all_flights_data()
+            arrived_number = 0
+            departed_number = 0
+            for flight in all_flights:
+                arrivedflight_time = flight[8]
+                Arrival_time_obj = datetime.datetime.strptime(arrivedflight_time, '%Y-%m-%d %H:%M:%S')
+                departedflight_time = flight[7]
+                Departed_time_obj = datetime.datetime.strptime(departedflight_time, '%Y-%m-%d %H:%M:%S')
+
+                if datetime.datetime.now() >= Arrival_time_obj and datetime.datetime.now() <= Departed_time_obj:
+                    arrived_number = arrived_number + 1
+                if  datetime.datetime.now() > Departed_time_obj:
+                    departed_number = departed_number + 1
+
+            total_passanger_num.config(text=all_passangers)
+            total_flights_arrived_num.config(text=arrived_number)
+            Departed_flights_num.config(text=departed_number)
+            Departed_flights_num.after(1000,uptime)
+
+        uptime() #calling the functions
 
         #Objects Of Different Classes
         Flights_obj = Flights()
@@ -75,20 +129,20 @@ class Home(Authentication):
         UpdateUser_obj = UpdateUser(pk)
 
 
-        b1 = Button(HomeFrame, text = "Flights", padx = 90, pady = 90,font = ("Arial",15), fg='black',bg = "white", command=Flights_obj.view)
-        b1.place(x = 150, y = 130,width=300,height =200)
+        b1 = Button(HomeFrame, text = "Flights", padx = 90, pady = 90,font = ("Arial",20), fg='black', bg='white',command=Flights_obj.view)
+        b1.place(x = 150, y = 210,width=300,height =200)
 
-        b2 = Button(HomeFrame, text = "Buy Ticket", padx = 90, pady = 90,font = ("Arial",15),fg='black',bg = "white", command=Buy_Tickets_obj.buy )
-        b2.place(x = 550, y = 130,width=300,height =200)
+        b2 = Button(HomeFrame, text = "Buy Ticket", padx = 90, pady = 90,font = ("Arial",20),fg='black', bg='white',command=Buy_Tickets_obj.buy )
+        b2.place(x = 550, y = 210,width=300,height =200)
 
-        b3 = Button(HomeFrame, text = "Passangers", padx = 90, pady = 90,font = ("Arial",15),fg='black',bg = "white", command=Passangers_obj.view)
-        b3.place(x = 950, y = 130,width=300,height =200)
+        b3 = Button(HomeFrame, text = "Passangers", padx = 90, pady = 90,font = ("Arial",20),fg='black',bg='white', command=Passangers_obj.view)
+        b3.place(x = 950, y = 210,width=300,height =200)
 
-        b4 = Button(HomeFrame, text = "Add a Flight", padx = 90, pady = 90,font = ("Arial",15),fg='black',bg = "white" ,command=Addflightbj.view)
-        b4.place(x = 150, y = 450 ,width=300,height =200)
+        b4 = Button(HomeFrame, text = "Add a Flight", padx = 90, pady = 90,font = ("Arial",20),fg='black',bg='white',command=Addflightbj.view)
+        b4.place(x = 150, y = 480 ,width=300,height =200)
 
-        b5 = Button(HomeFrame, text = "User", padx = 90, pady = 90,font = ("Arial",15),fg='black',bg = "white",command=UpdateUser_obj.view)
-        b5.place(x = 550, y = 450 ,width=300,height =200)
+        b5 = Button(HomeFrame, text = "User", padx = 90, pady = 90,font = ("Arial",20),fg='black',bg='white',command=UpdateUser_obj.view)
+        b5.place(x = 550, y = 480 ,width=300,height =200)
 
         def closehome():
             result = tkMessageBox.askquestion('', 'Are you sure you want to quit', icon="question") 
@@ -97,8 +151,8 @@ class Home(Authentication):
             else:
                 pass
 
-        b6 = Button(HomeFrame, text = "Logout", padx = 90, pady = 90,font = ("Arial",15),fg='black',bg = "white",command=closehome)
-        b6.place(x = 950, y = 450,width=300,height =200)
+        b6 = Button(HomeFrame, text = "Logout", padx = 90, pady = 90,font = ("Arial",20),fg='black',bg='white',command=closehome)
+        b6.place(x = 950, y = 480,width=300,height =200)
 
 
         root.mainloop()
@@ -139,13 +193,15 @@ class LoginWindow(Database):
         
         txt_user=Entry(Frame_Login,font=("times new roman",15),bg="gray9",fg='white')
         txt_user.place(x=90,y=170,width=350,height=35)
+        txt_user.config(insertbackground='white')
 
         lbl_pass=Label(Frame_Login,text="Password",font=("Goudy old style",15,"bold"),fg="white",bg="gray8")
         lbl_pass.place(x=90,y=210)
         
         txt_pass=Entry(Frame_Login,font=("times new roman",15),bg="gray9",fg='white')
-        txt_pass.config(show="*")
+        txt_pass.config(show="*")   
         txt_pass.place(x=90,y=240,width=350,height=35)
+        txt_pass.config(insertbackground='white')
 
         #creating object of Authentication Class
         obj = Authentication() 

@@ -187,8 +187,6 @@ class Database:
 
             currsor.execute(insert_with_param, data_tuple)
             conn.commit()
-            print("Data Inserted in Flights Table..")
-
         except sqlite3.Error as error:
             print(f"Error in sqlite3 {error}")
 
