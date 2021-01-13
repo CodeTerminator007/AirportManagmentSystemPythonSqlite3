@@ -22,7 +22,7 @@ class ADD_FLIGHT:
         Create_Flight_Frame.place(relx=0.5,rely=0.5, anchor = CENTER ,height=650,width=800)
         
         title =Label(Create_Flight_Frame,text="Add Flight ",font=("Impact",35,"bold"),fg="black",bg="white")
-        title.place(x=90,y=30)
+        title.place(relx=0.4,y=30)
 
         lbl_Airline_name=Label(Create_Flight_Frame,text="Airline Name",
         font=("Goudy old style",15,"bold"),fg="black",bg="white")
@@ -189,7 +189,8 @@ class ADD_FLIGHT:
                 tkMessageBox.showwarning('', 'Looks Like Some Data is Missing .!', icon="warning" ,parent=Create_Flight_Frame) 
 
             
-
+        time_label = Label(Create_Flight_Frame,text='The Time Format must be 24Hour',bg="white",fg="black",font=("times new roman",11))
+        time_label.place(x=90,y=500)
         submit_btn=Button(Create_Flight_Frame,text="Submit", command=submit , bg="white",fg="black",font=("times new roman",15))
         submit_btn.place(x=90,y=540,width=180,height=40)
         root.mainloop()
