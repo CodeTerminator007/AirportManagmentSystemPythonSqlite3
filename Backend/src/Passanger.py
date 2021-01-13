@@ -8,7 +8,7 @@ from tkcalendar import DateEntry
 from database import *
 
 
-class Passangers():
+class Passangers:
     def __init__(self):
         pass
     def view(self):

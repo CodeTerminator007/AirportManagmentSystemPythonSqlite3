@@ -11,10 +11,10 @@ class ADDUSER:
         pass
     def view(self):            
             root = Tk(className="Airport Managment System : Add User")
-            root.geometry("1200x800+150+0")
+            root.geometry("1100x700+150+0")
 
             Myframe = Frame(root,bg = "white")
-            Myframe.place(relx=0.5,rely=0.5, anchor = CENTER ,height=650,width=800)
+            Myframe.place(relx=0.5,rely=0.5, anchor = CENTER ,height=550,width=800)
 
 
             Label1 = Label(Myframe, text = "Add User",font = ("Times New Roman",35,"bold"),bg = "white")
@@ -134,6 +134,6 @@ class ADDUSER:
 
             
             btn_Add_User = Button(Myframe, text = "Submit",font=("times new roman",15),bg = "white",command=Submit)
-            btn_Add_User.place(x=90,y=540,width=180,height=40)     
+            btn_Add_User.place(x=90,y=400,width=180,height=40)     
 
             root.mainloop()
