@@ -15,7 +15,7 @@ class Database:
     def create_users_table(self):
         conn = sqlite3.connect('database.db')
         currsor = conn.cursor()
-        currsor.execute("""CREATE TABLE users(
+        currsor.execute("""CREATE TABLE IF NOT EXISTS users(
             userid INTEGER PRIMARY KEY AUTOINCREMENT,            
             first_name text NOT NULL,
             last_name text NOT NULL,            
@@ -32,7 +32,7 @@ class Database:
     def create_flights_table(self):
         conn = sqlite3.connect('database.db')
         currsor = conn.cursor()
-        currsor.execute("""CREATE TABLE flights(
+        currsor.execute("""CREATE TABLE IF NOT EXISTS flights(
             flightid INTEGER PRIMARY KEY ,
             airline_name text NOT NULL,
             flight_number text NOT NULL UNIQUE,
@@ -52,7 +52,7 @@ class Database:
     def create_passengers_table(self):
         conn = sqlite3.connect('database.db')
         currsor = conn.cursor()
-        currsor.execute("""CREATE TABLE passengers(
+        currsor.execute("""CREATE TABLE IF NOT EXISTS passengers(
             passengerid INTEGER PRIMARY KEY ,
             first_name text NOT NULL,
             last_name text NOT NULL,
@@ -343,5 +343,7 @@ class Database:
         conn.commit()
         conn.close()
 
-# obj = Database()
-# obj.Insert_data_users('Ali','Ahmad','admin2','Aliahmad631@gmail.com','admin',datetime.datetime.now())
+obj = Database()
+obj.create_users_table()
+obj.create_passengers_table()
+obj.create_users_table()
