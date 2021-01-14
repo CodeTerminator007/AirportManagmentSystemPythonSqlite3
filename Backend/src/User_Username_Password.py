@@ -12,13 +12,13 @@ class USER_EMAIL:
         self.password  = ''       
     def view(self):            
             root = Tk(className="Airport Managment System : User ")
-            root.geometry("800x700+150+0")
+            root.geometry("800x700+400+70")
 
             Myframe = Frame(root,bg = "white")
             Myframe.place(relx=0.5,rely=0.5, anchor = CENTER ,height=450,width=500)
 
 
-            Label1 = Label(Myframe, text = "Enter Email password",font = ("Times New Roman",30,"bold"),bg = "white")
+            Label1 = Label(Myframe, text = "Airport Managment System",font = ("Times New Roman",25,"bold"),bg = "white")
             Label1.place(relx = 0.5, rely = 0.1, anchor = CENTER)
 
             lbl_username = Label(Myframe, text = "Email",font = ("Times New Roman",16), bg = "white")
@@ -40,11 +40,12 @@ class USER_EMAIL:
                 file.write(f"EMAIL_PASSWORD = '{self.password}'") 
                 file.close() 
                 close()                                            
-            
-            labell = Label(root,text='Looks Like You dont Have a Email and Password for The Managment System to send Mails Enter its Email And Password Here  ' , fg="red",font=("times new roman",11))
-            labell.place(x=30,y=600)
-            btn_Add_User = Button(Myframe, text = "Submit",font=("times new roman",15),bg = "white",command=submit)
-            btn_Add_User.place(x=90,y=300,width=180,height=40)     
+            label2 = Label(Myframe,text='Looks Like Software needs a Email and Password for The Managment System \nto send Mails Enter its Email And Password Here' , fg="red",bg="white",font=("times new roman",11))
+            label2.place(x=10,y=80)
+            labell = Label(Myframe,text='Note: Once Data Given this window will not appear Ever ' , fg="red",bg="white",font=("times new roman",11))
+            labell.place(x=90,y=400)
+            btn_Add_User = Button(Myframe, text = "Save",font=("times new roman",15),bg = "white",command=submit)
+            btn_Add_User.place(x=90,y=330,width=180,height=40)     
 
             root.mainloop()
 obj = USER_EMAIL()
