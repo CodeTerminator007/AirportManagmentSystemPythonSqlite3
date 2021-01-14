@@ -145,10 +145,13 @@ class Home(Authentication):
 
         def closehome():
             result = tkMessageBox.askquestion('', 'Are you sure you want to quit', icon="question") 
-            if result ==  "yes":
-                root.destroy()
-            else:
-                pass
+            def runagain():
+                if result ==  "yes":
+                    root.quit()
+                    b5.after(500,runagain)
+                else:
+                    pass
+            runagain()
 
         b6 = Button(HomeFrame, text = "Logout", padx = 90, pady = 90,font = ("Arial",20),fg='black',bg='white',command=closehome)
         b6.place(x = 950, y = 480,width=300,height =200)
