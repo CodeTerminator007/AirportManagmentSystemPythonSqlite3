@@ -75,14 +75,19 @@ class Buy_Tickets:
         avaliable_flights = obj.Show_all_flights_data()
         aval_destination = []
         for f in avaliable_flights:
-            cityflag = False
-            city = f[6]
-            for g in aval_destination:
-                if city == g:
-                    cityflag = True
-            
-            if cityflag == False:
-                aval_destination += [city]
+            departedflight_time = f[7]
+            Departed_time_obj = datetime.datetime.strptime(departedflight_time, '%Y-%m-%d %H:%M:%S')                    
+            if datetime.datetime.now() > Departed_time_obj:
+                pass
+            else:            
+                cityflag = False
+                city = f[6]
+                for g in aval_destination:
+                    if city == g:
+                        cityflag = True
+                
+                if cityflag == False:
+                    aval_destination += [city]
 
 
         Destination_label=Label(Buy_ticket_frame,text="Destination",font=("Goudy old style",15,"bold"),fg="black",bg="white")
@@ -101,11 +106,17 @@ class Buy_Tickets:
                 flight = []
                 avaliable_flights_list =  obj.show_specif_flight_data_with_destination(location)
                 for x in avaliable_flights_list:
-                    id = x[0]
-                    flight_name = x[2]
-                    flight_num = x[1]
-                    flight_time = x[7]
-                    flight += [f"{id} {flight_name} {flight_num} leaves on {flight_time}"]
+                    departedflight_time = x[7]
+                    Departed_time_obj = datetime.datetime.strptime(departedflight_time, '%Y-%m-%d %H:%M:%S')                    
+                    if datetime.datetime.now() > Departed_time_obj:
+                        pass
+                    else:                    
+                        id = x[0]
+                        flight_name = x[2]
+                        flight_num = x[1]
+                        flight_time = x[7]
+
+                        flight += [f"{id} {flight_name} {flight_num} leaves on {flight_time}"]
                     
                 drop_down_flights=OptionMenu(Buy_ticket_frame,clicked2,'Select Flights Here',*flight )        
                 drop_down_flights.place(x=350,y=540,width=350,height=30)
