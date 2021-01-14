@@ -152,7 +152,7 @@ class Home(Authentication):
 
         b6 = Button(HomeFrame, text = "Logout", padx = 90, pady = 90,font = ("Arial",20),fg='black',bg='white',command=closehome)
         b6.place(x = 950, y = 480,width=300,height =200)
-
+        
         def check_email_password():
             from usernamepassword import EMAIL_ADDRESS, EMAIL_PASSWORD
             if EMAIL_ADDRESS == '' or EMAIL_PASSWORD =='':
