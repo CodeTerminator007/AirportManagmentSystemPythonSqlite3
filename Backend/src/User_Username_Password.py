@@ -12,8 +12,8 @@ class USER_EMAIL:
         self.password  = ''       
     def view(self):            
             root = Tk(className="Airport Managment System : User ")
-            root.geometry("800x700+400+70")
-
+            root.geometry("700x600+400+70")
+            root.resizable(False,False)
             Myframe = Frame(root,bg = "white")
             Myframe.place(relx=0.5,rely=0.5, anchor = CENTER ,height=450,width=500)
 
@@ -26,9 +26,9 @@ class USER_EMAIL:
             txt_username = Entry(Myframe,font = ("Times New Roman",14),width = 20)
             txt_username.place(x=90,y=170,width=250,height=30)
             lbl_password = Label(Myframe, text = "Password",font = ("Times New Roman",16), bg = "white")
-            lbl_password.place(x=90,y=230)
+            lbl_password.place(x=90,y=200)
             txt_password = Entry(Myframe, show="*" ,font = ("Times New Roman",14),width = 20)
-            txt_password.place(x=90,y=270,width=250,height=30)
+            txt_password.place(x=90,y=240,width=250,height=30)
             
             def close():
                 root.destroy()
@@ -45,8 +45,6 @@ class USER_EMAIL:
             labell = Label(Myframe,text='Note: Once Data Given this window will not appear Ever ' , fg="red",bg="white",font=("times new roman",11))
             labell.place(x=90,y=400)
             btn_Add_User = Button(Myframe, text = "Save",font=("times new roman",15),bg = "white",command=submit)
-            btn_Add_User.place(x=90,y=330,width=180,height=40)     
+            btn_Add_User.place(x=90,y=290,width=180,height=40)     
 
             root.mainloop()
-obj = USER_EMAIL()
-obj.view()
