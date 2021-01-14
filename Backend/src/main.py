@@ -51,7 +51,6 @@ class Home(Authentication):
         root = Tk()
         root.title("Airport Managment System : Home")
         root.geometry("1500x1080+10+0")
-        root.resizable(False, False)
         #Clock code Here
         def clock_update():
             hour = time.strftime("%I")
@@ -154,11 +153,14 @@ class Home(Authentication):
         b6 = Button(HomeFrame, text = "Logout", padx = 90, pady = 90,font = ("Arial",20),fg='black',bg='white',command=closehome)
         b6.place(x = 950, y = 480,width=300,height =200)
 
-        from usernamepassword import EMAIL_ADDRESS, EMAIL_PASSWORD
-        if EMAIL_ADDRESS == '' or EMAIL_PASSWORD =='':
-            from User_Username_Password import USER_EMAIL
-            op = USER_EMAIL()
-            op.view()            
+        def check_email_password():
+            from usernamepassword import EMAIL_ADDRESS, EMAIL_PASSWORD
+            if EMAIL_ADDRESS == '' or EMAIL_PASSWORD =='':
+                from User_Username_Password import USER_EMAIL
+                op = USER_EMAIL()
+                op.view() 
+            b6.after(60000,check_email_password)
+        check_email_password()           
         root.mainloop()
 
 #Importing Classes From Files
