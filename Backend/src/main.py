@@ -50,7 +50,9 @@ class Home(Authentication):
 
         root = Tk()
         root.title("Airport Managment System : Home")
-        root.geometry("1500x1080+10+0")
+        width = root.winfo_screenwidth()
+        height = root.winfo_screenheight()        
+        root.geometry(f"{width}x{height}+0+0")
         #Clock code Here
         def clock_update():
             hour = time.strftime("%I")
