@@ -13,7 +13,9 @@ class Passangers:
         pass
     def view(self):
         root=Tk()
-        root.geometry("1500x800+0+0")
+        width = root.winfo_screenwidth()
+        height = root.winfo_screenheight()        
+        root.geometry(f"{width}x{height}+0+0")
         root.title("Airport Managment System : Passangers Records")
     
         Frame_Records=Frame(root,bg="white")
