@@ -1,2 +1,2 @@
-EMAIL_ADDRESS = 'airportmanagmentsystem@gmail.com'
-EMAIL_PASSWORD = 'AirportManagmentSystem1234'
+EMAIL_ADDRESS = ''
+EMAIL_PASSWORD = ''
