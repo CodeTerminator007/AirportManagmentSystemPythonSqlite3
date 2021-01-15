@@ -24,6 +24,14 @@ python main.py
 
 ## Login and Add User
 
+![alt text](https://github.com/CodeTerminator007/AirportManagmentSystemPythonSqlite3/blob/master/images/1.PNG?raw=true)
+## Main Dashboard
+![alt text](https://github.com/CodeTerminator007/AirportManagmentSystemPythonSqlite3/blob/master/images/2.PNG?raw=true)
+## Flights Search and update Window
+![alt text](https://github.com/CodeTerminator007/AirportManagmentSystemPythonSqlite3/blob/master/images/3.PNG?raw=true)
+## Buy Ticket Window
+![alt text](https://github.com/CodeTerminator007/AirportManagmentSystemPythonSqlite3/blob/master/images/5.PNG?raw=true)
+
 
 
 
