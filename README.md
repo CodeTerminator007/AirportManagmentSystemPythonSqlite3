@@ -20,12 +20,11 @@ python main.py
 
 ```
 
-## GUI
-Login and Add User
-![alt text](https://github.com/CodeTerminator007/AirportManagmentSystemPythonSqlite3/blob/master/images/1.PNG?raw=true)
-Main dashboard
-![alt text](https://github.com/CodeTerminator007/AirportManagmentSystemPythonSqlite3/blob/master/images/2.PNG?raw=true)
-![alt text](https://github.com/CodeTerminator007/AirportManagmentSystemPythonSqlite3/blob/master/images/3.PNG?raw=true)
+# GUI
+
+## Login and Add User
+
+
 
 
 ## Contributing
