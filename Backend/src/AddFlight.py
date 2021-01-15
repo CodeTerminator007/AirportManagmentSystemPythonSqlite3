@@ -181,10 +181,14 @@ class ADD_FLIGHT:
 
             #Checking if there is an empty entered value
             if BlackFlag1 == False and BlackFlag2 ==False and BlackFlag3 == False and BlackFlag4 == False and BlackFlag5 == False and BlackFlag6 ==False:
-                created_time = datetime.datetime.now()
-                obj.Insert_data_flights(Airline_Name,Flight_number,int(Seats),int(Seats_Availiable),Location_From,Location_To,Departure_time_obj,Arrival_time_obj,created_time)
-                tkMessageBox.showwarning('', 'Flight Created!', icon="warning" ,parent=Create_Flight_Frame)                 
-                close()
+                if int(Seats) > int(Seats_Availiable):
+                    created_time = datetime.datetime.now()
+                    obj.Insert_data_flights(Airline_Name,Flight_number,int(Seats),int(Seats_Availiable),Location_From,Location_To,Departure_time_obj,Arrival_time_obj,created_time)
+                    tkMessageBox.showwarning('', 'Flight Created!', icon="warning" ,parent=Create_Flight_Frame)                 
+                    close()
+                else:
+                    tkMessageBox.showwarning('', 'The Avaliable Seats cannot be more then Total Seats!', icon="warning" ,parent=Create_Flight_Frame) 
+
             else:
                 tkMessageBox.showwarning('', 'Looks Like Some Data is Missing .!', icon="warning" ,parent=Create_Flight_Frame) 
 
