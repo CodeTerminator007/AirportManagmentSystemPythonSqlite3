@@ -31,7 +31,8 @@ python main.py
 ![alt text](https://github.com/CodeTerminator007/AirportManagmentSystemPythonSqlite3/blob/master/images/3.PNG?raw=true)
 ## Buy Ticket Window
 ![alt text](https://github.com/CodeTerminator007/AirportManagmentSystemPythonSqlite3/blob/master/images/5.PNG?raw=true)
-
+## Passanger search and update Window
+![alt text](https://github.com/CodeTerminator007/AirportManagmentSystemPythonSqlite3/blob/master/images/6.PNG?raw=true)
 
 
 
