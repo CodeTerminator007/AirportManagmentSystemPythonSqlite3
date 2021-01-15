@@ -193,11 +193,15 @@ class Flights:
                 def Update():    
                     result = tkMessageBox.askquestion('', 'Are you sure you want change', icon='question',parent=Myframe)                
                     if result == 'yes':
-                        obj = Database()
-                        obj.update_flight_with_pk(theid,company_name_enter.get(),flight_number_enter.get(),
-                        total_seats_enter.get(),avaliable_seats_enter.get(),from_where_enter.get(),
-                        to_where_enter.get(),departure_time_enter.get(),arrival_time_enter.get())
-                        closeupdatewindow()
+                        if int(totalseats) >= int(avalseats):
+                            obj = Database()
+                            obj.update_flight_with_pk(theid,company_name_enter.get(),flight_number_enter.get(),
+                            total_seats_enter.get(),avaliable_seats_enter.get(),from_where_enter.get(),
+                            to_where_enter.get(),departure_time_enter.get(),arrival_time_enter.get())
+                            closeupdatewindow()
+                        else:
+                            tkMessageBox.showwarning('', 'Thes Avaliable Seats cannot be more then Total Seats!', icon="warning" ,parent=Create_Flight_Frame) 
+                            
 
                 company_name = Label(Myframe, text = "Company Name",font = ("Times New Roman",16), bg = "white")
                 company_name.place(x = 70, y = 120 )
