@@ -63,7 +63,7 @@ class Home(Authentication):
             clock_label.after(1000,clock_update)
 
         clock_label = Label(root,text='',fg='black',font = ("times new roman",16,'bold'))
-        clock_label.place(x=1350,y=5)   
+        clock_label.place(x=width-200,y=5)   
 
 
         HomeFrame = Frame(root)

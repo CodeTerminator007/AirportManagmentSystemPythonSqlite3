@@ -66,14 +66,15 @@ class ADD_FLIGHT:
         lbl_arrival_time.place(x=90,y=400)
         arrival_time=Entry(Create_Flight_Frame,font=("times new roman",13),bg="white")
         arrival_time.place(x=90,y=430,width=250,height=30)
-        arrival_time.insert(END, "12/01/21 12:15:00")
+        now = datetime.datetime.now()
+        arrival_time.insert(END, now.strftime("%d/%m/%y %H:%M:%S"))
 
 
         lbl_departure_time = Label(Create_Flight_Frame,text="Departure Time",font=("Goudy old style",15,"bold"),fg="black",bg="white")
         lbl_departure_time.place(x=450,y=400)
         departure_time=Entry(Create_Flight_Frame,font=("times new roman",13),bg="white")
         departure_time.place(x=450,y=430,width=250,height=30)
-        departure_time.insert(END, "12/01/21 12:15:00")
+        departure_time.insert(END, now.strftime("%d/%m/%y %H:%M:%S"))
 
         def datemaskarrival(event):
             if len(arrival_time.get()) == 2:
